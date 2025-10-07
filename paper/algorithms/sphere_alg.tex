@@ -1,0 +1,23 @@
+\begin{algorithm}
+    \caption{Random sphere bisection.}
+    \label{alg:sphere}
+    \begin{algorithmic}[1]
+        \Require Graph \( G = (\mathcal{V}, \mathcal{E}) \), points \( P_i = (x_{1}, \dots, x_{d})_i \)
+    \Ensure A bisection of \( G \) into \(\mathcal{V}_1\) and \(\mathcal{V}_2\)
+    \Function{random\_sphere\_part}{graph $G$, points $P_i$}
+        \State Calculate the center of mass \(\bar{P}\)
+        \State Normalize \(P_i \rightarrow \tilde{P_i} = (P_i - \bar{P})/\max_j{|P_j - \bar{P}|}\)
+        \State Project each \(\tilde{P_i}\) onto the unit sphere \(\tilde{P_i}\rightarrow Z_i \in \mathcal{S}^d\)
+        \For{each of \( m \) random center points}
+            \State Select a random subset of points from \(Z\)
+            \State Compute coordinate-wise median \(c\)
+            \State Apply conformal map to move \(c\) to the origin
+            \For{each random directions \(u\)}
+                \State \(\mathcal{V}_1 \gets { i \mid \langle Z_i, u \rangle \leq 0 }, \quad \mathcal{V}_2 \gets { i \mid \langle Z_i, u \rangle > 0 } \)
+                \State Select \(\mathcal{V}_1\), \(\mathcal{V}_2\) with the smallest edge cut
+            \EndFor
+        \EndFor
+        \State \Return \(\mathcal{V}_1\), \(\mathcal{V}_2\)
+    \EndFunction
+    \end{algorithmic}
+\end{algorithm}

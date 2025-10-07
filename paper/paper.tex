@@ -1,0 +1,54 @@
+
+% JuliaCon proceedings template
+\documentclass{juliacon}
+
+% Define the \add command
+ \newcommand{\add}[1]{\textit{\textcolor{blue}{#1}}}
+
+\setcounter{page}{1}
+
+\begin{document}
+
+\input{header}
+
+\maketitle
+
+\begin{abstract}
+    \subfile{sections/0_abstract}
+\end{abstract}
+
+\section{Introduction}
+    \subfile{sections/1_introduction}
+
+\section{Background on graph partitioning}
+    \label{sec:background}
+    \subfile{sections/2_background}
+
+\section{Overview of implemented partitioning algorithms}
+    \label{sec:algo}
+    \subfile{sections/3_algorithms}
+
+\section{Framework and tools for graph bisection}
+    \label{sec:framwork}
+    \subfile{sections/4_framework}
+
+\section{Installation and demonstration}
+    \label{sec:demo}
+    \subfile{sections/5_installation}
+
+
+\section{Conclusion and future works}
+    \label{sec:conclusion}
+    \subfile{sections/6_conclusion}
+\FloatBarrier
+\section{Acknowledgment}
+The authors gratefully acknowledge the scientific support and HPC resources provided by the Erlangen National High Performance Computing Center (NHR@FAU) of the Friedrich-Alexander-Universität Erlangen-Nürnberg (FAU) under the NHR project j101df. NHR funding is provided by federal and Bavarian state authorities. NHR@FAU hardware is partially funded by the German Research Foundation (DFG) – 440719683
+We also would like to acknowledge the financial support of the joint DFG (ID 470857344) and
+SNSF (ID 200021L\_204817) project entitled \textit{Numerical Algorithms, Frameworks, and Scalable Technologies for Extreme-Scale Computing}, and the computing  support by a grant from the Swiss National Supercomputing Centre (CSCS)
+under project ID u3-31045.
+
+\input{bib.tex}
+
+\end{document}
+
+% Inspired by the International Journal of Computer Applications template

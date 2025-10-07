@@ -1,0 +1,25 @@
+title: "GraphLab.jl: A Julia Framework for Graph Partitioning"
+keywords:
+  - Julia
+  - Graph partitioning
+  - Clustering
+  - Numerical computing
+authors:
+  - name: "Malik Lechekhab"
+    orcid: "0009-0008-2279-0804"
+    affiliation: 1
+  - name: "Dimosthenis Pasadakis"
+    affiliation: 1
+  - name: "Roger Käppeli"
+    affiliation: 2
+  - name: "Aryan Eftekhari"
+    affiliation: 1
+  - name: "Olaf Schenk"
+    affiliation: 1
+affiliations:
+  - name: "Faculty of Informatics, Università della Svizzera italiana (USI), Lugano, Switzerland"
+    index: 1
+  - name: "Seminar for Applied Mathematics, ETH Zürich"
+    index: 2
+date: "2025-10-08"
+bibliography: "ref.bib"
