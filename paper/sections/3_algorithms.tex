@@ -1,0 +1,285 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Algorithms
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[../paper.tex]{subfiles}
+\begin{document}
+    This section provides an overview of the partitioning algorithms implemented
+    in the framework, detailing their underlying principles and computational properties.
+    Through illustrative examples and visual representations, we highlight the behavior of each algorithm.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Geometric-based
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \subsection{Geometric-based partitioning algorithms}
+    \label{subsec:geo}
+    This class of bisection algorithms operates under the assumption that the geometric layout of the
+    graph is known.
+    These algorithms exploit spatial information of the vertices to guide the
+    partitioning process, aiming to minimize edge cuts while preserving geometric
+    coherence\cite{doi:10.1137/S1064827594275339}.
+    This approach is particularly well suited for applications where the graph structure
+    arises from physical systems, such as finite element meshes in numerical computing,
+    where the underlying geometry directly influences computational efficiency\cite{buluc2015recentadvancesgraphpartitioning}. Unless stated otherwise, all function calls presented in this section take as input a graph adjacency matrix \texttt{A} and a node coordinate matrix \texttt{coords}, and return a vector assigning each node to partition 1 or 2.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
+    \subsubsection{Coordinate bisection}
+    \label{subsubsec:coord}
+    Coordinate bisection seeks a hyperplane orthogonal to one of the coordinate axes that partitions the graph's vertices into two subsets of approximately equal size
+    while minimizing the edge cut.
+    The algorithm computes the median $\bar{x}_j$ of each coordinate $x_j$,
+    dividing all graph vertices into two groups: one containing vertices with $x_j \leq \bar{x}_j$ and the other $x_j > \bar{x}_j$. The edge cut is then evaluated for each coordinate axis, and the
+    partitioning is performed along the axis that yields the smallest edge cut.
+    This process in a $d$-dimensional space is summarized in \Cref{alg:coord}, with an example illustrated in \Cref{fig:coord}.
+    \input{figures/coordinates_bisect_fig}
+    \input{algorithms/coordinate_bisect_alg}
+    
+    The coordinate bisection method in \texttt{GraphLab.jl} can be invoked using the following command:
+    
+    \begin{lstlisting}[language=Julia]
+    GraphLab.part_coordinate(A, coords)
+    \end{lstlisting}
+    
+    The coordinate bisection algorithm is computationally efficient and conceptually simple.
+    However, its effectiveness is strongly influenced by the choice of coordinate system.
+    A mere rotation of the coordinate axes can lead to significantly different partitioning results,
+    as the algorithm strictly aligns the division with the coordinate axes.
+    This sensitivity may lead to suboptimal partitions, particularly in cases where the problem geometry
+    is not naturally aligned with the axes, highlighting a fundamental limitation of the algorithm in certain applications.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   
+    \subsubsection{Inertial bisection}
+    The inertial bisection mitigates the axis-alignment limitation of coordinate bisection by
+    allowing the dividing hyperplane to be orthogonal to a direction determined by the
+    distribution of vertices rather than a fixed coordinate axis. This approach ensures that
+    partitioning is guided by the intrinsic geometry of the data rather than an arbitrary reference frame.
+    In two dimensions, the dividing hyperplane is
+    represented by a line $l$ that minimizes the sum
+    of squared distances from the vertices to the line. The algorithm first determines the center of mass of the vertex set,
+    \begin{equation}
+      \bar{P}=(\bar{x}, \bar{y}), \quad \text{where} \quad  \bar{x} = \frac{1}{n}\sum_{i=1}^n x_i, \quad \bar{y} = \frac{1}{n}\sum_{i=1}^n y_i\text{.}
+    \end{equation}
+    It then defines a unit direction vector $\mathbf{u}=[u_1, u_2]^T$, such that 
+    $\|\mathbf{u}\|_2 = \sqrt{u_1^2+u_2^2} = 1$.
+    The parametric equation
+    of the bisecting line is given by
+    $l(\lambda) = \{\bar{P} + \lambda \mathbf{u}  \mid \lambda \in \mathbb{R} \}$.
+    
+    \input{figures/inertial_fig}
+    
+    % The coordinates of the center of mass $\bar{P}$, which lies on the line $l$, are given by
+    
+    
+    To determine the optimal orientation of the bisecting hyperplane, the unit direction vector $\mathbf{u}$ is chosen to minimize the sum of the squared
+    distances from the vertices to the line:
+    
+    \input{math/inertial_eq}
+    
+    Here, $\mathbf{M}$ is a symmetric matrix, and its smallest eigenvalue corresponds to the minimal sum of the squared distances. Consequently, the optimal direction vector $\mathbf{u}$ is given by the
+    normalized eigenvector associated with the smallest eigenvalue of
+    $\mathbf{M}$ \cite{elsner1997graph}. This choice ensures that the partitioning hyperplane is aligned with the principal axis of least variance, making the algorithm robust to coordinate system transformations. The full procedure for bisecting a graph using inertial partitioning is summarized in \Cref{alg:inert}.
+    
+    \input{algorithms/inertial_alg}
+
+    To perform inertial bisection with \texttt{GraphLab.jl} on a graph, use:
+
+    \begin{lstlisting}[language=Julia]
+    GraphLab.part_inertial(A, coords)
+    \end{lstlisting}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \subsubsection{Random sphere bisection}
+    \label{sub:rand_sphere}
+    The random sphere method \cite{doi:10.1137/S1064827594275339} partitions a graph
+    by exploiting spatial information to identify separators that align with the intrinsic geometry of the vertex
+    distribution.
+    Instead of relying on axis-aligned or moment-based directions,
+    this approach uses randomized geometric projections to discover low-cut partitions.
+    The algorithm initially normalizes the vertex by translating and scaling the vertex coordinates to ensure the distribution is centered at the origin and confined within a unit-scale region.
+    It subsequently maps the vertex coordinates onto the unit sphere via stereographic projection, thereby embedding the original Euclidean geometry into a higher-dimensional spherical manifold.
+
+    To identify effective separators, the algorithm selects
+    several approximate center points on the sphere, each obtained as the coordinate-wise median of a randomly sampled subset of vertices.
+    Around each center point, a conformal transformation is applied to recenter the spherical embedding, thereby increasing the likelihood that sampled circles align with meaningful structures in the graph.
+    For each transformed configuration, the algorithm samples
+    multiple directions on the sphere, each defining a candidate circle separator.
+    Vertices are then partitioned according to the sign of their
+    inner product with the chosen direction vector, effectively
+    dividing the sphere into two hemispheres.
+
+    In addition to spherical separators, the method also considers a set of random linear cuts in the original
+    Euclidean space. Each linear cut is defined by a hyperplane
+    orthogonal to a randomly sampled direction and positioned to
+    bisect the vertex set at the median projection values.
+    The final output is the spherical or linear partition that minimizes the total edge cut.
+
+    The random spherical bisection algorithm implemented in \texttt{GraphLab.jl} is described in \Cref{alg:sphere} and can be applied with:
+
+    \begin{lstlisting}[language=Julia]
+    GraphLab.part_randsphere(A, coords; ntrials)
+    \end{lstlisting}
+
+    An optional argument \texttt{ntrials} specifies the number of random directions to try.
+
+    \input{algorithms/sphere_alg}
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   
+    \subsubsection{Adaptive space-filling curves}
+    \label{sub:sfc}
+    Space-filling curves (SFCs) provide a continuous, one-dimensional traversal
+    of multidimensional space that preserves spatial locality.
+    In the context of partitioning, SFCs induce a linear ordering of the data
+    points, enabling recursive division into balanced and spatially coherent subregions. In this work, we implement an adaptive SFC traversal over a
+    hierarchical spatial decomposition to generate partitions that reflect the geometric structure of the input graph \cite{Sasidharan15, sasidharan2015space}.
+
+    The algorithm, presented in \Cref{alg:adaptive_sfc}, performs coordinate bisection as introduced in \Cref{subsubsec:coord} based on spatial distribution of the graph's vertices, using an adaptive SFC traversal.
+    It begins by constructing a KD-tree of the vertex coordinates $P$, where, at each node, the splitting axis is chosen according to the direction of maximum spatial extent. The point set $P$ is then recursively divided until each leaf contains a single point.
+
+    Once the tree is built a, an adaptive SFC traversal defines a linear order of the leaves by visiting spatial regions in a directionally consistent, locality-preserving manner. This process is governed by entry and exit directions propagated recursively. The coordinates associated with each leaf are collected in the order of traversal, yielding a one-dimensional sequence.
+    This process is illustrated in \Cref{fig:sfc}.
+
+    The resulting sequence is subsequently partitioned into $k$ contiguous segments of approximately equal size, producing $k$ spatially coherent and locality-preserving partitions. A key advantage of this method over other partitioning approaches is that, once the traversal is computed, partitioning into an arbitrary number of parts becomes a trivial post-processing step: splitting the ordered node list into contiguous segments.
+
+    Adaptive space-filling curve partitioning in \texttt{GraphLab.jl} is invoked as follows, with an optional argument \texttt{k} specifying the number of partitions:
+    
+    \begin{lstlisting}[language=Julia]
+    GraphLab.part_adaptive_sfc(A, coords, k)
+    \end{lstlisting}
+
+    \input{figures/sfc_fig}
+    
+    \input{algorithms/sfc_partitioning_alg}
+    
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Non-geometric-based
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \subsection{Non-geometric-based partitioning algorithms}
+    \label{subsec:non-geo}
+    Geometric-based partitioning algorithms are efficient techniques for partitioning meshes, particularly
+    when spatial adjacency plays a key role in connectivity. However, these algorithms have inherent limitations.
+    They rely on the assumption that the graph's vertices exhibit a spatial relationship, an assumption that does not
+    hold in all contexts, such as social networks\cite{Newman_2013} or parallel processing\cite{10.1145/2503210.2503293}.
+    
+    To accommodate a broader range of applications, alternative algorithms that do not rely on geometric information
+    have been developed. Notable examples include the Kernighan-Lin algorithm\cite{6771089} and graph-growing algorithms\cite{doi:10.1137/S1064827595287997},
+    both well suited for partitioning graphs an lacking explicit spatial structure.
+    Among these, spectral bisection is a particularly powerful technique, leveraging
+    the eigenvalues and eigenvectors of the graph Laplacian matrix to inform partitioning decision\cite{fiedler75}.
+    In this subsection, we focus
+    on the implementation and application of spectral bisection, detailing its computational properties and advantages over geometry-dependent algorithms.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
+    \subsubsection{Spectral bisection}\label{sub:spec} The spectral bisection algorithm partitions a graph
+    by leveraging the eigenvector corresponding to the second-smallest eigenvalue
+    --- commonly known as the Fiedler vector--- of the graph's Laplacian matrix $\mathbf{L}$.
+    The Laplacian matrix is defined as:
+    \begin{equation}
+        \mathbf{L} = \mathbf{D}-\mathbf{A},
+    \end{equation}
+    where $\mathbf{D}$ is the degree matrix and $\mathbf{A}$ is the adjacency matrix.
+    The graph Laplacian $\mathbf{L}$ is a symmetric, positive semi-definite matrix, ensuring the existence of an orthogonal basis of eigenvectors $\mathbf{u}^{(i)}$ with corresponding eigenvalues
+    $\lambda^{(i)}$.
+    The smallest eigenvalue, $\lambda^{(1)} = 0$, and its associated eigenvector
+    $\mathbf{u}^{(1)} = c\mathbf{1}$, where $c$ is a constant and $\mathbf{1}$ is the all one’s vector, correspond to the trivial solution that reflects the connectivity of
+    the entire graph.
+    The eigenvector $\mathbf{u}^{(2)}$
+    associated with the second-smallest eigenvalue $\lambda^{(2)}$, known as the Fiedler vector\cite{fiedler75}, captures intrinsic connectivity pattern of the graph, as illustrated in \Cref{fig:spec}.
+    
+    Each node $v_i$ is associated with the corresponding entry $\mathbf{u}^{(2)}_i$ of the Fiedler vector. The partition is performed by thresholding these values:
+    \begin{itemize}
+        \item A threshold at zero yields two roughly balanced subsets while minimizing the edge cut.
+        \item A threshold at $\mathbf{u}^{(2)}$ results in two strictly equal-sized partitions.
+    \end{itemize}
+    The complete spectral bisection algorithm is outlined in \Cref{alg:spec}, detailing its key computational steps.
+    
+    \input{figures/spectral_fig}
+    
+    \input{algorithms/spectral_alg}
+
+    Spectral bisection method implemented in \texttt{GraphLab.jl} can be executed with:
+
+    \begin{lstlisting}[language=Julia]
+    GraphLab.part_spectral(A)
+    \end{lstlisting}
+
+    It requires only the adjacency matrix \texttt{A} as input and returns a vector assigning each node to partition 1 or 2.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Hybrid bisection
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \subsection{Hybrid partitioning algorithms}
+    \label{subsec:hybrid}
+    Building on the random sphere bisection and the spectral partitioning described in \ref{sub:rand_sphere} and \ref{sub:spec}, hybrid bisection extends spectral methods with
+    a randomized geometric layer to enhance partitioning quality, particularly in graphs with an underlying spatial structure.
+
+    The method begins by computing a spectral embedding of the graph, in which each vertex is mapped to a point in $\mathbb{R}^d$ using the first $d$ nontrivial eigenvectors of the Laplacian matrix. This embedding encodes the global
+    connectivity structure of the graph in a continuous geometric space, often revealing natural separations aligned
+    with sparse cuts.
+
+    The embedded point cloud is partitioned with the random sphere method. This process effectively performs a geometric search over separators, guided by the spectral structure of the graph.
+
+    The hybrid method leverages the algebraic properties of spectral embeddings alongside the geometric adaptability of random sphere cuts to generate balances and spatially localized partitions.
+
+    Geometric spectral partitioning in \texttt{GraphLab.jl} can be executed with:
+
+    \begin{lstlisting}[language=Julia]
+    GraphLab.part_geospectral(A; ev=d)
+    \end{lstlisting}
+
+    In addition to the adjacency matrix \texttt{A}, it optionally accepts $\texttt{ev}=d$ the number of nontrivial Laplacian eigenvectors to use for embedding (default: 2).
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Recursive bisection
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \subsection{Recursive bisection and nested dissection}
+    Recursive bisection and nested dissection are techniques that rely on recursively partitioning a graph into smaller subgraphs. While recursive bisection is primarily used to generate multiple balanced partitions, nested dissection applies a recursive strategy to reduce fill-in during sparse matrix factorization. This section outlines both methods and their respective algorithmic formulations.
+    \subsubsection{Recursive bisection}
+    \label{subsub:rec_bi}
+    A straightforward and effective strategy for partitioning a graph into $p = 2^q$ parts,
+    where $q$ is a positive integer, is recursive bisection, as presented in \Cref{alg:recursive}.
+    This algorithm iteratively applies graph bisection, progressively
+    subdividing the graph into smaller sub-graphs.
+    In \texttt{GraphLab.jl}, recursive bisection can be used with any of the bisection algorithms presented in \Cref{subsec:geo,subsec:non-geo}.
+    The algorithm is built around a recursive function, \texttt{Recursion}, which takes as inputs:
+    \begin{itemize}
+        \item $C'$, the current sub-graph to be partitioned,
+        \item $p'$, the number of partitions into which $C'$ will be further divided, and
+        \item $\mathrm{idx}$, an integer tracking the position of the first part of $C'$ in the final partitioning results.
+    \end{itemize}
+    
+    At each recursive step, the sub-graph $C'$ is bisected into two balanced parts. The process continues
+    until the desired number of partitions, $p = 2^q$, is obtained. This recursive strategy results in a structured,
+    hierarchical decomposition of the graph, making it particularly well suited for parallel computing applications, especially in domains like finite element and finite difference methods\cite{doi:10.1137/S1064827593255135}. 
+    
+    \input{algorithms/recursive_alg}
+
+    \texttt{GraphLab.jl} provides a recursive interface for all partitioning algorithms described in \Cref{sec:algo}, which can be invoked with:
+
+    \begin{lstlisting}[language=Julia]
+    GraphLab.recursive_bisection(method, k, 
+        A, coords)
+    \end{lstlisting}
+
+    Here, \texttt{method} is any partitioning function available in the package, \texttt{k} is the desired number of partitions (if not a power of two, it is automatically rounded up to the nearest power of two), and \texttt{A} and \texttt{coords} are the graph's adjacency matrix and node coordinates. The function returns a vector assigning each node a label from 1 to \texttt{k}, indicating its partition membership.
+
+
+    \subsubsection{Nested dissection}
+    The nested dissection ordering algorithm is a multilevel heuristic introduced to minimize fill-in, i.e., the creation of nonzero entries during sparse matrix factorizations\cite{George73}.
+    It recursively partitions a graph $G$ through the identification of balanced vertex separators, which are removed to decompose $G$ into disconnected components. The same procedure is then applied recursively to each subgraph.
+    Unlike standard recursive bisection, as described in \Cref{subsub:rec_bi}, which directly bisects the graph into two parts, nested dissection introduces an intermediate step: the explicit computation of a separator whose removal divides the problem into independent subproblems.
+    To compute the separator, border vertices are first identified between the two subdomains resulting from the initial bisection. These vertices induce a bipartite graph, where edges represent adjacency across the partition boundary. A maximum matching is then computed on this bipartite graph; this matching corresponds to a minimum vertex cover\cite{turner2020mappingmatchingsminimumvertex, storer2012introduction}, providing an efficient approximation of a small separator. The selected separator vertices are removed, and the nested dissection proceeds recursively on the resulting components.
+    The final ordering $\pi$ places all separator vertices after the recursively ordered interior vertices, yielding a global vertex ordering that preserves sparsity patterns. The overall process is outlined in \Cref{alg:nested_dis}.
+
+    This strategy is widely used in the symbolic factorization phase of sparse direct solvers, where it facilitates the construction of efficient elimination trees and reduces both fill-in and memory overhead during numerical factorization.
+    Nested dissection can be implemented using partitioning methods presented in \Cref{subsec:geo} and \Cref{subsec:non-geo} for separator computation, making it a flexible tool in both partitioning and numerical linear algebra contexts.
+
+    \input{algorithms/nested_alg}
+
+    The nested dissection provided by \texttt{GraphLab.jl} can be called using:
+
+    \begin{lstlisting}[language=Julia]
+    GraphLab.nested_dissection(A, method; 
+        coords, minsep=5)
+    \end{lstlisting}
+
+    The inputs are the adjacency matrix \texttt{A}, any partitioning \texttt{method} from \texttt{GraphLab.jl}, and the node coordinates \texttt{coords} if required by the chosen method. An optional argument \texttt{minsep} specifies the minimum separator size (default: 5). The output is a permutation vector representing the nested dissection ordering.
+    
+\end{document}

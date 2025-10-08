@@ -1,0 +1,63 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Introduction
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[../paper.tex]{subfiles}
+\begin{document}
+
+
+    Graph partitioning is a fundamental problem with wide-ranging
+    applications in computational biology, social network
+    analysis, high-performance computing (HPC), and distributed
+    systems. Partitioning large graphs into loosely connected
+    subsets of roughly equal size promotes parallel execution,
+    reduces communication overhead, and provides insights into the
+    structure of complex networks~\cite{MoreRecentAdvances}.
+
+    %  
+    We contribute to the \texttt{Julia} ecosystem of graph algorithms with
+    \texttt{GraphLab.jl}, a package designed to
+    facilitate the study, experimentation, and research
+    of graph partitioning.
+    Over the years, a plethora of graph partitioning
+    techniques have been developed. Evaluating their
+    effectiveness and comparing their trade-offs are key
+    to building intuition and practical understanding.
+    \texttt{GraphLab.jl} offers a framework
+    that enables users to experiment with algorithms, 
+    visualize results, and assess partition quality. The
+    package implements a diverse set of partitioning
+    algorithms, including
+    coordinate~\cite{Simon91}, inertial~\cite{farhat1993automatic}, and
+    spectral bisection~\cite{fiedler75,Simon91}, random spheres~\cite{doi:10.1137/S1064827594275339}, space-filling
+    curves~\cite{Sasidharan15}, and nested dissection~\cite{George73}. These methods can be applied
+    recursively for hierarchical partitioning or multi-level strategies. \texttt{GraphLab.jl} also
+    provides routines for generating adjacency matrices, computing partition quality metrics,
+    benchmarking problems, and visualizing partitioned graphs. It allows integration with external
+    graph partitioning software, thus enabling users to compare additional methods and results in a
+    unified environment.
+
+    % This work aims to contribute to the educational efforts of the Julia graph community and to assist in introducing Julia's capabilities to learners and researchers engaging in graph theory and related partitioning problems.
+    
+    The paper is structured as follows. \Cref{sec:background} provides background on graph
+    partitioning, followed by an overview the fundamental
+    implemented partitioning algorithms in \Cref{sec:algo}.
+    \Cref{sec:framwork} introduces our framework, detailing its capabilities in graph creation,
+    benchmarking, visualization, and external software integration. Installation and usage
+    demonstrations are discussed in \Cref{sec:demo}, and we conclude with a summary
+    and directions for future work in \Cref{sec:conclusion}.
+\end{document}
+
+
+
+
+    % Graph partitioning is a fundamental problem with broad applications in scientific domains where the relationships between interconnected variables are critical. From computational biology and social network analysis to high-performance computing (HPC) and distributed systems, efficient graph partitioning techniques play a key role in optimizing performance, reducing computational overhead, and enabling deeper insight into complex data.
+
+
+
+    % Over the years, a diverse array of graph partitioning techniques has been developed, including spectral partitioning, multilevel approaches, and combinatorial optimization methods. While these techniques have significantly advanced the field, teaching and experimenting with them --- particularly in an HPC context --- pose unique challenges. For both students and researchers, the ability to explore multiple partitioning strategies, evaluate their effectiveness, and compare their trade-offs is essential to develop an intuitive understanding of graph partitioning.
+    
+    % To facilitate this process, we introduce a framework, \texttt{\texttt{GraphLab.jl}}, designed to support the study and benchmarking of graph partitioning techniques within a unified workflow. Implemented in Julia, \texttt{\texttt{GraphLab.jl}} does not aim to replace existing graph processing and visualization tools, but rather to integrate them, offering a cohesive environment where users can construct graphs, apply partitioning algorithms, analyze and visualize the results seamlessly. It supports both recursive and non-recursive partitioning strategies, including geometric approaches such as coordinate bisection and inertial bisection, as well as methods that operate without geometric data, such as spectral bisection. The framework provides tools for visualization, quality assessment, and performance benchmarking, offering a structured workflow for both research and education.
+    
+    % We selected Julia as the foundation for this framework due to its modern, high-performance architecture, user-friendly syntax, and strong commitment to open-source principles. Julia’s accessibility and reproducibility make it particularly well suited for interactive exploration and algorithmic experimentation. To further enhance usability, the framework integrates seamlessly with \texttt{Pluto.jl} notebooks, creating an interactive environment for hands-on learning and pedagogical applications.
+    
+    % Although our framework provides essential partitioning tools, it also allows users to incorporate external graph partitioning software, facilitating interoperability with established libraries and algorithms. We offer guidelines and examples for integrating widely used partitioning tools into Julia workflows, allowing researchers to take advantage of the latest methods alongside the capabilities of our framework.

@@ -1,0 +1,28 @@
+\begin{algorithm}
+    \caption{Nested dissection ordering.}
+    \label{alg:nested_dis}
+    \begin{algorithmic}[1]
+        \Require Adj. matrix \( A \), partitioning \textsc{method}, minimum separator size $\mathrm{minsep}$
+        \Ensure Permutation vector \(\pi\) s.t. \(A[\pi, \pi]\) has reduced fill-in
+        \Function{nested\_dis}{$A$, \textsc{method}, $\mathrm{coords}$ (opt.), $\mathrm{minsep}$}
+            \State Identitfy connected components of \(A\)
+            \State Initialize permutation vector \(\pi\)
+
+            \For{each component \(C\)}
+                \If{\(|C| \leq \mathrm{minsep}\)}
+                    \State Apply minimum degree ordering on \(A[C, C]\)
+                \Else
+                    \State Bisect \(C \rightarrow C_1, C_2\) via \textsc{method} 
+                    \State Identify separator nodes between \(C_1\) and \(C_2\)
+                    \State Recursively compute orderings:
+                    \State \hspace{2em}$\pi_1 \gets$ \Call{nested\_dis}{$A[C_1, C_1]$}
+                    \State \hspace{2em}$\pi_2 \gets$ \Call{nested\_dis}{$A[C_2, C_2]$}
+                    \State Combine \(\pi_C \gets [\pi_1, \pi_2, \text{separator}]\)
+                \EndIf
+                \State Insert \(\pi_C\) into global permutation \(\pi\)
+            \EndFor
+            
+            \State \Return \(\pi\)
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}

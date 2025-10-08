@@ -1,0 +1,15 @@
+\begin{algorithm}
+    \caption{Spectral bisection.}
+    \label{alg:spec}
+    \begin{algorithmic}[1]
+        \Require Graph \( G = (\mathcal{V}, \mathcal{E}) \)
+    \Ensure A bisection of \( G \) into \(\mathcal{V}_1\) and \(\mathcal{V}_2\)
+    \Function{spectral\_part}{graph $G$}
+        \State Form the Laplacian matrix \(\mathbf{L}\)
+        \State Compute the 2nd smallest eigenval. \(\lambda^{(2)}\) and eigenvec. \(\mathbf{u}^{(2)}\)
+        \State Set 0 or the median of \(\mathbf{u}^{(2)}\) as threshold \(\epsilon\)
+        \State Set \(\mathcal{V}_1 := \{v_i \in \mathcal{V} \mid u_i< \epsilon\}\), \(\mathcal{V}_2 := \{v_i \in \mathcal{V} \mid u_i \geq \epsilon\}\)
+        \State \Return \(\mathcal{V}_1, \mathcal{V}_2\)
+    \EndFunction
+    \end{algorithmic}
+\end{algorithm}

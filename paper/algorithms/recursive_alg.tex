@@ -1,0 +1,24 @@
+\begin{algorithm}
+    \caption{Recursive bisection.}
+    \label{alg:recursive}
+    \begin{algorithmic}[1]
+        \Require Graph \( G = (\mathcal{V}, \mathcal{E}) \)
+    \Ensure A $p$-way partition of \( G \)
+    \State \(G_p = \{C_1,\dots, C_p\}\)
+    \State \(p = 2^l\)
+    \Function{rec\_bisection}{graph $G$, number of parts $p$}
+        \Function{recursion}{$C'$, $p'$, $\mathrm{idx}$}
+            \If{\(p'\) \text{is even}}
+                \State \(p' \leftarrow \frac{p'}{2}\)
+                \State \(\left(C'_1, C'_2\right)\leftarrow \)\Call{bisection}{$C'$}
+                \State \Call{recursion}{$C'_1$, $p'$, $\mathrm{idx}$}
+                \State \Call{recursion}{$C'_2$, $p'$, $\mathrm{idx}+p'$}
+            \Else
+                \State \(C_{\mathrm{idx}} \leftarrow C'\)
+            \EndIf
+        \EndFunction
+         \State \Call{recursion}{$C$, $p$, $1$}
+         \State \Return \(G_p\)
+    \EndFunction
+    \end{algorithmic}
+\end{algorithm}

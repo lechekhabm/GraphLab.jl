@@ -1,0 +1,17 @@
+\begin{algorithm}
+    \caption{Coordinate bisection.}
+    \label{alg:coord}
+    \begin{algorithmic}[1]
+        \Require Graph \( G = (\mathcal{V}, \mathcal{E}) \), points \( P_i = (x_{1}, \dots, x_{d})_i \)
+    \Ensure A bisection of \( G \) into \(\mathcal{V}_1\) and \(\mathcal{V}_2\)
+    \Function{coordinate\_part}{graph $G$, points $P_i$}
+        \For{each axis \( x_j \) where \( j = 1, \dots, d \)}
+            \State Compute the median \(\bar{x_j}\)
+            \State Compute the edge cut for the bisection at \(\bar{x_i}\)
+        \EndFor
+        \State Select the axis \(x_j^*\) with the smallest median edge cut
+        \State Partition \(\mathcal{V}\) into \(\mathcal{V}_1\) and \(\mathcal{V}_2\) via \(\bar{x_j^*}\) bisection
+        \State \Return \(\mathcal{V}_1, \mathcal{V}_2\)
+    \EndFunction
+    \end{algorithmic}
+\end{algorithm}
