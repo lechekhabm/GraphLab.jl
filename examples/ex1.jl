@@ -148,5 +148,5 @@ header = [
     "EC (METIS)", "NC (METIS)", "RC (METIS)", "Bal. (METIS)"
 ]
 
-fmt(x) = x isa Number ? string(round(x; digits=3)) : string(x)
-pretty_table(final_results, header=header, formatters =fmt, crop = :horizontal, autowrap = true)
+formatter = (v,i,j) -> round(v, digits=3);
+pretty_table(final_results, header=header, formatters =formatter, crop = :horizontal, autowrap = true)
