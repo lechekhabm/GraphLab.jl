@@ -88,7 +88,7 @@ files = [
 # Directory containing the files
 base_dir = "meshes/"
 
-final_results = Matrix{Any}(undef,length(files),9)
+final_results = Matrix{Any}(undef,length(files),17)
 
 # Process each file
 for (i, file_name) in enumerate(files)
