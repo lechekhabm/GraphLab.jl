@@ -148,5 +148,4 @@ header = [
     "EC (METIS)", "NC (METIS)", "RC (METIS)", "Bal. (METIS)"
 ]
 
-formatter = (v,i,j) -> round(v, digits=3);
-pretty_table(final_results, header=header, formatters =formatter, crop = :horizontal, autowrap = true)
+pretty_table(final_results, header=header, crop = :horizontal, autowrap = true)
