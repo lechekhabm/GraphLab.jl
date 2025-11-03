@@ -40,7 +40,7 @@ function benchmark( A::SparseMatrixCSC,
 
     # Compute edge cuts
     edge_cuts = [
-        GraphLab.(A, p_coord),
+        GraphLab.count_edge_cut(A, p_coord),
         GraphLab.count_edge_cut(A, p_inertial),
         GraphLab.count_edge_cut(A, p_spectral),
         GraphLab.count_edge_cut(A, p_metis)
