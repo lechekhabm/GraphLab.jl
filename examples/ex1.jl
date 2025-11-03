@@ -148,4 +148,5 @@ header = [
     "EC (METIS)", "NC (METIS)", "RC (METIS)", "Bal. (METIS)"
 ]
 
-pretty_table(final_results, header=header, crop = :horizontal, autowrap = true)
+fmt(x) = x isa Number ? @sprintf("%.3f", x) : string(x)
+pretty_table(final_results, header=header, formatters = fmt, crop = :horizontal, autowrap = true)
