@@ -148,4 +148,4 @@ header = [
     "Edge Cut (METIS)", "Norm. Cut (METIS)", "Ratio Cut (METIS)", "Balance (METIS)"
 ]
 
-pretty_table(final_results, header=header)
+pretty_table(final_results, header=header, crop = :none)
