@@ -142,10 +142,10 @@ end
 # Pretty print the final results
 header = [
     "Mesh Name",
-    "Edge Cut (Coord)", "Balance (Coord)",
-    "Edge Cut (Inertial)", "Balance (Inertial)",
-    "Edge Cut (Spectral)", "Balance (Spectral)",
-    "Edge Cut (METIS)", "Balance (METIS)"
+    "Edge Cut (Coord)", "Norm. Cut (Coord)", "Ratio Cut (Coord)", "Balance (Coord)",
+    "Edge Cut (Inertial)", "Norm. Cut (Inertial)", "Ratio Cut (Inertial)", "Balance (Inertial)",
+    "Edge Cut (Spectral)", "Norm. Cut (Spectral)", "Ratio Cut (Spectral)", "Balance (Spectral)",
+    "Edge Cut (METIS)", "Norm. Cut (METIS)", "Ratio Cut (METIS)", "Balance (METIS)"
 ]
 
 pretty_table(final_results, header=header)
