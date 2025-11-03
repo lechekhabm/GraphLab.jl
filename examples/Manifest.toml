@@ -2,7 +2,7 @@
 
 julia_version = "1.10.9"
 manifest_format = "2.0"
-project_hash = "1f18fdeaf0dfbb3372a74911f1b1742353d288d6"
+project_hash = "3ca06ca1d7d1374244376fef4080c9de7fd28562"
 
 [[deps.AMD]]
 deps = ["LinearAlgebra", "SparseArrays", "SuiteSparse_jll"]
@@ -598,7 +598,7 @@ uuid = "7746bdde-850d-59dc-9ae8-88ece973131d"
 version = "2.82.4+0"
 
 [[deps.GraphLab]]
-deps = ["AMD", "Arpack", "CairoMakie", "Cbc", "Colors", "Graphs", "GraphsMatching", "JuMP", "LinearAlgebra", "Metis", "Random", "SparseArrays", "Statistics"]
+deps = ["AMD", "Arpack", "Artifacts", "CairoMakie", "Cbc", "Colors", "Graphs", "GraphsMatching", "JuMP", "LinearAlgebra", "MAT", "Metis", "Random", "SparseArrays", "Statistics"]
 path = ".."
 uuid = "d38e4d1f-8cde-4b91-b345-2d365d6c1ed6"
 version = "0.1.0"

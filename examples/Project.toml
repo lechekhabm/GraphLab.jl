@@ -1,4 +1,5 @@
 [deps]
+Artifacts = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
 DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
 GraphLab = "d38e4d1f-8cde-4b91-b345-2d365d6c1ed6"
 MAT = "23992714-dd62-5051-b70f-ba57cb901cac"

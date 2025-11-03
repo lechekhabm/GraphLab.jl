@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2023)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: paper.aux
+The style file: juliacon.bst
+Database file #1: ref.bib
+Warning--empty journal in elsner1997graph
+You've used 18 entries,
+            2118 wiz_defined-function locations,
+            614 strings with 7402 characters,
+and the built_in function-call counts, 5714 in all, are:
+= -- 542
+> -- 261
+< -- 3
++ -- 109
+- -- 86
+* -- 402
+:= -- 965
+add.period$ -- 54
+call.type$ -- 18
+change.case$ -- 95
+chr.to.int$ -- 0
+cite$ -- 19
+duplicate$ -- 211
+empty$ -- 466
+format.name$ -- 86
+if$ -- 1192
+int.to.chr$ -- 0
+int.to.str$ -- 18
+missing$ -- 18
+newline$ -- 92
+num.names$ -- 36
+pop$ -- 101
+preamble$ -- 1
+purify$ -- 79
+quote$ -- 0
+skip$ -- 149
+stack$ -- 0
+substring$ -- 341
+swap$ -- 33
+text.length$ -- 3
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 68
+warning$ -- 1
+while$ -- 51
+width$ -- 20
+write$ -- 194
+(There was 1 warning)

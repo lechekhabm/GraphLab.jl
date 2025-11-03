@@ -40,10 +40,24 @@ function benchmark( A::SparseMatrixCSC,
 
     # Compute edge cuts
     edge_cuts = [
-        GraphLab.count_edge_cut(A, p_coord),
+        GraphLab.(A, p_coord),
         GraphLab.count_edge_cut(A, p_inertial),
         GraphLab.count_edge_cut(A, p_spectral),
         GraphLab.count_edge_cut(A, p_metis)
+    ]
+
+    norm_cuts = [
+        GraphLab.normalized_cut(A, p_coord),
+        GraphLab.normalized_cut(A, p_inertial),
+        GraphLab.normalized_cut(A, p_spectral),
+        GraphLab.normalized_cut(A, p_metis)
+    ]
+
+    ratio_cuts = [
+        GraphLab.ratio_cut(A, p_coord),
+        GraphLab.ratio_cut(A, p_inertial),
+        GraphLab.ratio_cut(A, p_spectral),
+        GraphLab.ratio_cut(A, p_metis)
     ]
 
     # Compute balance ratios
@@ -54,7 +68,7 @@ function benchmark( A::SparseMatrixCSC,
         GraphLab.compute_partition_balance(p_metis)
     ]
 
-    return edge_cuts, balances
+    return edge_cuts, norm_cuts, ratio_cuts, balances
 end
 
 # List of .mat files
@@ -101,17 +115,25 @@ for (i, file_name) in enumerate(files)
 
     # Run the benchmark function
     println("Processing file: $file_path with prefix: $prefix")
-    edge_cuts, balances = benchmark(A, coords, prefix)
+    edge_cuts, norm_cuts, ratio_cuts, balances = benchmark(A, coords, prefix)
 
     final_results[i, 1] = file_name
     final_results[i, 2] = edge_cuts[1]
-    final_results[i, 3] = balances[1]  # Balance for part_coordinate
-    final_results[i, 4] = edge_cuts[2]
-    final_results[i, 5] = balances[2]  # Balance for part_inertial
-    final_results[i, 6] = edge_cuts[3]
-    final_results[i, 7] = balances[3]  # Balance for part_spectral
-    final_results[i, 8] = edge_cuts[4]
-    final_results[i, 9] = balances[4]  # Balance for part_metis
+    final_results[i, 3] = norm_cuts[1]
+    final_results[i, 4] = ratio_cuts[1]
+    final_results[i, 5] = balances[1]  # Balance for part_coordinate
+    final_results[i, 6] = edge_cuts[2]
+    final_results[i, 7] = norm_cuts[2]
+    final_results[i, 8] = ratio_cuts[2]
+    final_results[i, 9] = balances[2]  # Balance for part_inertial
+    final_results[i, 10] = edge_cuts[3]
+    final_results[i, 11] = norm_cuts[3]
+    final_results[i, 12] = ratio_cuts[3]
+    final_results[i, 13] = balances[3]  # Balance for part_spectral
+    final_results[i, 14] = edge_cuts[4]
+    final_results[i, 15] = norm_cuts[4]
+    final_results[i, 16] = ratio_cuts[4]
+    final_results[i, 17] = balances[4]  # Balance for part_metis
    
     # Close the .mat file
     MAT.close(file)

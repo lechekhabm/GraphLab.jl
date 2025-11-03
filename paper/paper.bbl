@@ -1,0 +1,105 @@
+\begin{thebibliography}{10}
+
+\bibitem{doi:https://doi.org/10.1002/9781118601181.ch1}
+Charles-Edmond Bichot.
+{\em General Introduction to Graph Partitioning}, chapter~1, pages 1--25.
+John Wiley \& Sons, Ltd, 2013.
+
+\bibitem{10.1145/2503210.2503293}
+Erik~G. Boman, Karen~D. Devine, and Sivasankaran Rajamanickam.
+Scalable matrix computations on large scale-free graphs using 2d graph
+  partitioning.
+In {\em Proceedings of the International Conference on High Performance
+  Computing, Networking, Storage and Analysis}, SC '13, New York, NY, USA,
+  2013. Association for Computing Machinery.
+
+\bibitem{buluc2015recentadvancesgraphpartitioning}
+Aydin Buluc, Henning Meyerhenke, Ilya Safro, Peter Sanders, and Christian
+  Schulz.
+Recent advances in graph partitioning, 2015.
+
+\bibitem{MoreRecentAdvances}
+\"{U}mit \c{C}ataly\"{u}rek, Karen Devine, Marcelo Faraj, Lars Gottesb\"{u}ren,
+  Tobias Heuer, Henning Meyerhenke, Peter Sanders, Sebastian Schlag, Christian
+  Schulz, Daniel Seemaier, and Dorothea Wagner.
+More recent advances in (hyper)graph partitioning.
+{\em ACM Comput. Surv.}, 55(12), March 2023.
+
+\bibitem{elsner1997graph}
+Ulrich Elsner.
+Graph partitioning-a survey.
+1997.
+
+\bibitem{farhat1993automatic}
+Charbel Farhat and Marc Lesoinne.
+Automatic partitioning of unstructured meshes for the parallel solution of
+  problems in computational mechanics.
+{\em International Journal for Numerical Methods in Engineering},
+  36(5):745--764, 1993.
+
+\bibitem{fiedler75}
+Miroslav Fiedler.
+A property of eigenvectors of nonnegative symmetric matrices and its
+  application to graph theory.
+{\em Czechoslovak Mathematical Journal}, 25(4):619--633, 1975.
+
+\bibitem{George73}
+Alan George.
+Nested dissection of a regular finite element mesh.
+{\em SIAM Journal on Numerical Analysis}, 10(2):345--363, 1973.
+
+\bibitem{doi:10.1137/S1064827594275339}
+John~R. Gilbert, Gary~L. Miller, and Shang-Hua Teng.
+Geometric mesh partitioning: Implementation and experiments.
+{\em SIAM Journal on Scientific Computing}, 19(6):2091--2110, 1998.
+
+\bibitem{doi:10.1137/S1064827595287997}
+George Karypis and Vipin Kumar.
+A fast and high quality multilevel scheme for partitioning irregular graphs.
+{\em SIAM Journal on Scientific Computing}, 20(1):359--392, 1998.
+
+\bibitem{6771089}
+Brian~Wilson Kernighan and Shen Lin.
+An efficient heuristic procedure for partitioning graphs.
+{\em The Bell System Technical Journal}, 49(2):291--307, 1970.
+
+\bibitem{Newman_2013}
+M.~E.~J. Newman.
+Community detection and graph partitioning.
+{\em EPL (Europhysics Letters)}, 103(2):28003, July 2013.
+
+\bibitem{Sasidharan15}
+Aparna Sasidharan, John~M. Dennis, and Marc Snir.
+A general space-filling curve algorithm for partitioning 2d meshes.
+In {\em 2015 IEEE 17th International Conference on High Performance Computing
+  and Communications, 2015 IEEE 7th International Symposium on Cyberspace
+  Safety and Security, and 2015 IEEE 12th International Conference on Embedded
+  Software and Systems}, pages 875--879, 2015.
+
+\bibitem{sasidharan2015space}
+Aparna Sasidharan and Marc Snir.
+Space-filling curves for partitioning adaptively refined meshes.
+{\em Mathematics and Computer Science}, 2015.
+
+\bibitem{Simon91}
+Horst~D. Simon.
+Partitioning of unstructured problems for parallel processing.
+{\em Computing Systems in Engineering}, 2(2):135--148, 1991.
+Parallel Methods on Large-scale Structural Analysis and Physics Applications.
+
+\bibitem{doi:10.1137/S1064827593255135}
+Horst~D. Simon and Shang-Hua Teng.
+How good is recursive bisection?
+{\em SIAM Journal on Scientific Computing}, 18(5):1436--1445, 1997.
+
+\bibitem{storer2012introduction}
+James~Andrew Storer.
+{\em An introduction to data structures and algorithms}.
+Springer Science \& Business Media, 2012.
+
+\bibitem{turner2020mappingmatchingsminimumvertex}
+Jacob Turner.
+Mapping matchings to minimum vertex covers: K\"{o}nig's theorem revisited,
+  2020.
+
+\end{thebibliography}
