@@ -1,0 +1,72 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Installation and demonstration
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[../paper.tex]{subfiles}
+\begin{document}
+    To install the package from GitHub\footnote{\url{https://github.com/lechekhabm/GraphLab.jl}} and integrate it into the working environment, the following steps are required:
+
+    \begin{enumerate}
+        \item Add \texttt{GraphLab.jl} to the project using the Julia command:
+\begin{lstlisting}[language = Julia]
+using Pkg
+Pkg.add(url="https://github.com/lechekhabm/GraphLab.jl")
+\end{lstlisting}
+        \item As a basic example for graph partitioning, the adjacency matrix $\mathbf{A}$ and vertex coordinates
+        are first constructed from the input data.
+        Here, we generate a synthetic $10 \times 50$ rectangular grid graph rotated by an angle of $\pi/3$ radians.
+        Spectral bisection is then applied to compute the partition $p$, followed by visualization and export of the partitioned graph as an image. The process is executed with the following commands:
+\begin{lstlisting}[language = Julia]
+using GraphLab
+A, coords = GraphLab.grid_graph(10, 50, π/3)
+p = GraphLab.part_spectral(A)
+GraphLab.draw_graph(A, coords, p, file_name="test.png")
+\end{lstlisting}
+
+        % The package automatically installs the following dependencies: \texttt{Arpack}, \texttt{CairoMakie}, \texttt{Colors}, \texttt{Graphs}, \texttt{LinearAlgebra}, \texttt{Metis}, \texttt{SparseArrays}, \texttt{Statistics}, \texttt{AMD}, \texttt{GraphsMatching}, \texttt{JuMP}, and \texttt{Cbc}.
+        % For extended functionality, additional packages such as \texttt{DelimitedFiles}, \texttt{MAT}, \texttt{Plots}, and \texttt{PrettyTables} may be required.
+    \end{enumerate}
+Further details on the package and its functionalities can be found in the online documentation\footnote{\url{https://lechekhabm.github.io/GraphLab.jl/dev/}}.
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Demonstration
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % \subsection{Demonstration}
+    % The package includes two example scripts that illustrate the usage of the framework for benchmarking and comparing various graph partitioning methods. These scripts are available in the `examples/` directory within the package and can be executed directly.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PLOT TEST
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{figure*}[!h]
+% 	\centering
+%     \subcaptionbox{\label{fig:LFR_Ncut}}
+%     {\inputtikz{figures_tikz}{LFR_Fscore}}
+% 	\caption{\label{fig:SBM_compare} Clustering the LFR datasets for an increasing noise component $\xi$. (a) NCut values. (b) Modularity values. (c) NMI accuracy values.}
+% \end{figure*}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Ex 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % \subsubsection{Example 1: Comparing partitioning methods}
+    % This example compares various graph partitioning methods, including coordinate bisection, inertial bisection, spectral bisection and bisection using \texttt{METIS}. The script \texttt{ex1.jl} evaluates these methods across a series of different graphs, providing insights into their performance and effectiveness, as illustrated in \Cref{fig:ex1_results}. 
+    % \input{figures/ex1_results}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Ex 2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % \subsubsection{Example 2: Comparing recursive bisection}
+    % This example illustrates recursive bisection using multiple methods, including coordinate bisection, inertial bisection, spectral bisection, and recursive bisection via \texttt{METIS} K-way partitioning. The script \texttt{ex2.jl} generates the results presented in \Cref{fig:ex2_results}
+    % \input{figures/ex2_results}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Usage in teaching scenarios
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % \subsection{Usage in teaching scenarios}
+    % \texttt{GraphLab.jl} is designed to support educational use, particularly in courses covering graph algorithms, high-performance computing, and scientific computing.
+    % By offering an interactive and reproducible environment, the package enables students to experiment with various partitioning techniques, assess their performance, and gain intuition about graph bisection methods.
+
+    % A typical teaching application could involve \texttt{Pluto.jl} or Google Colab notebooks for visualizing and comparing partitioning methods.
+    % For instance, an instructor can guide students through partitioning sample meshes, examining the effects of different algorithms on edge cut and balance ratio.
+\end{document}
+

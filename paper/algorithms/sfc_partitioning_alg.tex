@@ -1,0 +1,38 @@
+\begin{algorithm}
+    \caption{Adaptive Space-Filling Curve Partitioning.}
+    \label{alg:adaptive_sfc}
+    \begin{algorithmic}[1]
+        \Require Graph \( G = (\mathcal{V}, \mathcal{E}) \), points \( P_i = (x_{1}, x_{2})_i \), number of parts \(k\)
+        \Ensure A partition of \( G \) into \( k \) parts
+        \Function{adaptive\_sfc\_partition}{graph $G$, points $P_i$, $k$}
+            \State Build spatial tree \(T \gets\) \Call{build\_tree}{$P_i$}
+            \State Traverse \(T\): \(order \gets\) \Call{traverse\_sfc}{$T$, $L$, $R$}
+            \State Partition the linear \(order\) into \(k\) balanced parts
+            \State \Return the \(k\) partitions of \(\mathcal{V}\)
+        \EndFunction
+        \Function{build\_tree}{points $P_i$}
+            \If{\(|P_i| = 1\)}
+                \State \Return leaf node containing \(P_1\)
+            \Else
+                \State Compute bounding box of \(P_i\)
+                \State Divide \(P_i\) into two subsets \(P^-\), \(P^+\)
+                \State Node \(N_{\text{left}} \gets\) \Call{build\_tree}{$P^-$}
+                \State Node \(N_{\text{right}} \gets\) \Call{build\_tree}{$P^+$}
+                \State \Return node with \(N_{\text{left}}\) and \(N_{\text{right}}\) as children
+            \EndIf
+        \EndFunction
+        \Function{traverse\_sfc}{node $N$, entry, exit, accumulator $a$}
+            \If{\(N\) is a leaf}
+                \State exit \(\gets\) coord. of \(N\)
+                \State Append \(N\) to \(a\)
+                \State \Return exit
+            \Else
+                \State Determine child order based on SFC rules
+                \For{each child in order}
+                    \State Recursively traverse child with updated entry/exit
+                \EndFor
+                \State \Return \(a\)
+            \EndIf
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
