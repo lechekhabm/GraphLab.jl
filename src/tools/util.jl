@@ -386,7 +386,7 @@ load(name::Symbol) = name === :airfoil ? airfoil() :
 
 load(name::AbstractString) = load(Symbol(name))
 
-function build_knn_adjacency(csvfile::AbstractString, k::Integer, header::Bool=false)    
+function build_knn_adjacency(csvfile::AbstractString; k::Integer=5, header::Bool=false)    
     # 1. Load coordinates from CSV
     # assume columns: x, y (and maybe more dims)
     tbl = CSV.File(csvfile; header=header)
