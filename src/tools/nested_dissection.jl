@@ -202,13 +202,25 @@ function _nested_dissection(A::SparseMatrixCSC, method::Function; coords::Union{
         p1border = unique(p_sub1[rows])
         p2border = unique(p_sub2[cols])
 
-        # Build the graph of border vertices
-        gborder = Graph(offset + length(p2border))
+        n1 = length(p1border)
+        n2 = length(p2border)
 
-        for i in 1:offset
-            for j in 1:length(p2border)
-                if A_sub[p1border[i], p2border[j]] != 0
-                    add_edge!(gborder, i, offset + j)
+        # Build the graph of border vertices
+        # gborder = Graph(offset + length(p2border))
+        gborder = Graph(n1 + n2)
+
+        # for i in 1:offset
+        #     for j in 1:length(p2border)
+        #         if A_sub[p1border[i], p2border[j]] != 0
+        #             add_edge!(gborder, i, offset + j)
+        #         end
+        #     end
+        # end
+
+        for (i, v1) in enumerate(p1border)       # i in 1:n1
+            for (j, v2) in enumerate(p2border)   # j in 1:n2
+                if A_sub[v1, v2] != 0
+                    add_edge!(gborder, i, n1 + j)
                 end
             end
         end
