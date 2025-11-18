@@ -21,6 +21,7 @@ include("tools/draw.jl")
 include("tools/util.jl")
 
 export build_adjacency
+export build_knn_adjacency
 export count_edge_cut
 export ratio_cut
 export normalized_cut

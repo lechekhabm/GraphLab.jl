@@ -1,4 +1,4 @@
-using Graphs, Artifacts, MAT, SparseArrays
+using Graphs, Artifacts, MAT, SparseArrays, LinearAlgebra, CSV, NearestNeighbors
 
 
 """
@@ -356,6 +356,7 @@ function swiss()
     file = joinpath(dir, "swiss", "Swiss_graph.mat")# ← path inside tarball
     d = MAT.matread(file)
     A = sparse(d["CH_adj"])
+    A = (A + transpose(A)) / 2
     coords = Matrix(d["CH_coords"])
     return A, coords
 end
@@ -371,6 +372,7 @@ function france()
     file = joinpath(dir, "france", "france_graph.mat")
     d = MAT.matread(file)
     A = sparse(d["A"])
+    A = (A + transpose(A)) / 2
     coords = Matrix(d["coords"])
     return A, coords
 end
@@ -383,3 +385,45 @@ load(name::Symbol) = name === :airfoil ? airfoil() :
 
 
 load(name::AbstractString) = load(Symbol(name))
+
+function build_knn_adjacency(csvfile::AbstractString, k::Integer, header::Bool=false)    
+    # 1. Load coordinates from CSV
+    # assume columns: x, y (and maybe more dims)
+    tbl = CSV.File(csvfile; header=header)
+
+    # turn into coords::Matrix{Float64} of size (n, d)
+    coords = (reduce(hcat, (collect(col) for col in tbl)) |> Matrix{Float64})
+
+    d, n = size(coords)  # n points, d dims
+
+    # 2. Build k-d tree (NearestNeighbors expects d×n)
+    tree = KDTree(coords)  # d×n
+
+    # 3. Query k+1 neighbors (includes the point itself)
+    idxs, dists = knn(tree, coords, k)
+
+    # 4. Build sparse adjacency matrix A (undirected, unweighted = 1)
+    I = Int[]
+    J = Int[]
+    V = Int[]
+
+    for i in 1:n
+        nbrs = idxs[i]
+        for j in nbrs          
+            if j == i
+                continue
+            end         # neighbor index
+            push!(I, i); push!(J, j); push!(V, 1)
+            push!(I, j); push!(J, i); push!(V, 1)  # make symmetric
+        end
+    end
+
+    A = sparse(I, J, V, n, n)
+
+    # (Optional) remove multi-edges >1 to 1.0
+    # A .= (A .> 0.0)
+
+    coords = Matrix(coords')
+
+    return A, coords
+end
