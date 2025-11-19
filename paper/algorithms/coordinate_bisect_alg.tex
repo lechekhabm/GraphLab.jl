@@ -1,0 +1,21 @@
+\begin{algorithm}
+    \caption{Coordinate bisection.}
+    \label{alg:coord}
+    \begin{algorithmic}[1]
+        \Require Graph \( G = (\mathcal{V}, \mathcal{E}) \), points \( P_i = (x_{1}, \dots, x_{d})_i \)
+        \Ensure A bisection of \( G \) into \(\mathcal{V}_1\) and \(\mathcal{V}_2\)
+        \Function{coordinate\_part}{graph $G$, points $P_i$}
+            \State Initialize $c_{\min} \gets \infty$, $j^* \gets 1$
+            \For{each axis \( x_j \), \( j = 1, \dots, d \)}
+                \State Compute the median \(\bar{x}_j\)
+                \State Compute the edge cut \( c_j \) for the bisection at \(\bar{x}_j\)
+                \If{ \( c_j < c_{\min} \) }
+                    \State $c_{\min} \gets c_j$
+                    \State $j^* \gets j$
+                \EndIf
+            \EndFor
+            \State Partition \(\mathcal{V}\) into \(\mathcal{V}_1\) and \(\mathcal{V}_2\) via \(\bar{x}_{j^*}\) bisection
+            \State \Return \(\mathcal{V}_1, \mathcal{V}_2\)
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}

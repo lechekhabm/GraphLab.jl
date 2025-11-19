@@ -1,0 +1,14 @@
+\begin{algorithm}
+    \caption{Inertial bisection.}
+    \label{alg:inert}
+    \begin{algorithmic}[1]
+        \Require Graph \( G = (\mathcal{V}, \mathcal{E}) \), points \( P_i = (x_{1}, \dots, x_{d})_i \)
+    \Ensure A bisection of \( G \) into \(\mathcal{V}_1\) and \(\mathcal{V}_2\)
+    \Function{inertial\_part}{graph $G$, points $P_i$}
+        \State Calculate the center of mass $\bar{P}$
+        \State Compute eigenvec. associated with smallest eigenval. of $\mathbf{M}$
+        \State Partition the vertices $\mathcal{V}$ around the line $l$
+        \State \Return \(\mathcal{V}_1, \mathcal{V}_2\)
+    \EndFunction
+    \end{algorithmic}
+\end{algorithm}

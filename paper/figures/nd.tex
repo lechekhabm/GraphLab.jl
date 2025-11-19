@@ -1,0 +1,35 @@
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.23\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/nd_3elt_orig.png}
+        \caption{\centering Original adjacency, Cholesky $\text{nnz}=93892$.}
+        \label{fig:nd_original}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.23\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/nd_3elt_coord.png}
+        \caption{\centering Coordinate bisection,  Cholesky $\text{nnz}=89566$}
+        \label{fig:nd_coord}
+    \end{subfigure}
+
+    \vskip\baselineskip  % Adds vertical space between the rows
+
+    \begin{subfigure}[b]{0.23\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/nd_3elt_inert.png}
+        \caption{\centering Inertial bisection,  Cholesky $\text{nnz}=89653$}
+        \label{fig:nd_inert}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.23\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/nd_3elt_spec.png}
+        \caption{\centering Spectral bisection,  Cholesky $\text{nnz}=89110$}
+        \label{fig:nd_spec}
+    \end{subfigure}
+
+    \caption{Comparison of the (a) original adjacency matrix of the \texttt{3elt} graph against three nested dissection reoderings obtained using (b) coordinate, (c) inertial,  and (d) spectral-based separators. Number of nonzeros (nnz) in the Cholesky factor are reported in the subcaptions.}
+    \label{fig:nd_perm_results}
+\end{figure}

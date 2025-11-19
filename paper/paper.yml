@@ -1,0 +1,26 @@
+title: "GraphLab.jl: A Julia Framework for Graph Partitioning"
+keywords:
+  - Julia
+  - Graph algorithms
+  - Graph partitioning
+  - Recursive methods
+  - Numerical computing
+authors:
+  - name: Malik Lechekhab
+    orcid: 0009-0008-2279-0804
+    affiliation: 1
+  - name: Dimosthenis Pasadakis
+    affiliation: 1
+  - name: Roger K{\"a}ppeli
+    affiliation: 2
+  - name: Aryan Eftekhari
+    affiliation: 1
+  - name: Olaf Schenk
+    affiliation: 1
+affiliations:
+  - name: Faculty of Informatics, Universit{\`a} della Svizzera italiana
+    index: 1
+  - name: Seminar for Applied Mathematics, ETH Z{\"u}rich
+    index: 2
+date: 08 October 2025
+bibliography: ref.bib

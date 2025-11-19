@@ -1,0 +1,22 @@
+\begin{equation} 
+\begin{aligned}[b]
+    \sum_{i=1}^n d_i^2 
+    &= \sum_{i=1}^n(x_i - \bar{x})^2+(y_i - \bar{y})^2\\
+    &-(u_1(x_i - \bar{x})+u_2(y_i - \bar{y}))^2 \\
+    &=(1-u_1^2)\sum_{i=1}^n(x_i - \bar{x})^2+
+    (1-u_2^2)\sum_{i=1}^n(y_i - \bar{y})^2\\
+    &+2u_1u_2\sum_{i=1}^n(x_i - \bar{x})(y_i - \bar{y})\\
+    &= (1-u_1^2)S_{xx}+
+    (1-u_2^2)S_{yy}+2u_1u_2S_{xy}\\
+    &=\mathbf{u}^T
+    \vcenter{
+        \hbox{$
+        \begin{pmatrix}
+        S_{xx} & S_{xy} \\
+        S_{xy} & S_{yy}
+        \end{pmatrix}
+        $}
+    } \label{eq:projection_matrix}
+    \mathbf{u} = \mathbf{u}^T\mathbf{M}\mathbf{u}
+\end{aligned}
+\end{equation}

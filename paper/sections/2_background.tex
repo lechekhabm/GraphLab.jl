@@ -1,0 +1,81 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Background
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[../paper.tex]{subfiles}
+\begin{document}
+    Consider a mesh consisting of eight cells, as illustrated in \Cref{fig:mesh_and_graph}.
+    If data exchange occurs only between adjacent cells, the mesh can be represented as a dependency
+    graph.
+    To partition the mesh into two domains suitable for parallel processing, the objective
+    is to divide it into two parts of roughly equal size, while
+    minimizing the number of edges connecting them.
+    This corresponds to partitioning the original graph into two complementary 
+    subgraphs, that have an almost equal number of vertices and a minimum number of interconnecting edges between them.
+    % In other words, the graph is divided into two balanced subsets by cutting the minimal
+    % number of edges.
+    
+    \begin{figure}[h!]
+        \centering
+        \begin{subfigure}[b]{0.23\textwidth}
+            \centering
+            % \includesvg[width=\textwidth]{images/mesh.drawio.svg}
+            \includegraphics[width=\textwidth]{images/mesh.drawio.png}
+            \caption{}
+            \label{fig:mesh_example}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{0.23\textwidth}
+            \centering
+            % \includesvg[width=\textwidth]{images/graph.drawio.svg}
+            \includegraphics[width=\textwidth]{images/graph.drawio.png}
+            \caption{}
+            \label{fig:graph_example}
+        \end{subfigure}
+        \caption{Mesh example consisting of 8 cells (a) and the corresponding
+        dependency graph (b).}
+        \label{fig:mesh_and_graph}
+    \end{figure}
+    
+    
+   Finding an optimal solution is NP-hard for this bisection problem, making the exact computation intractable for large instances~\cite{buluc2015recentadvancesgraphpartitioning}. In the following,
+    we formalize the graph partitioning problem and introduce bisection algorithms.
+    Here, bisection specifically refers to partitioning the graph into two subgraphs.
+    A general partitioning into $p = 2^l$ sub-graphs, where $l$ denotes the number of recursive bisection levels, can then
+    be obtained recursively by applying a bisection method iteratively. 
+    % \textcolor{red}{AE NOTE: you need to define $l$.}
+    
+    Let $G=(\mathcal{V}, \mathcal{E})$ be an undirected graph with a vertex set 
+    $\mathcal{V}=\{ v_1, \dots, v_n \}$ where each vertex $v_i$ represents
+    an element or entity in the problem domain, and an edge set $\mathcal{E}$
+    where each edge $e_{i, j} \in \mathcal{E}$ represents a symmetric relation between
+    two distinct vertices $v_i$ and $v_j$, meaning that
+    $e_{i, j} \in \mathcal{E}$ implies $e_{j, i} \in \mathcal{E}$, and no self-loops exist, i.e., $e_{i, i} \notin \mathcal{E}$. Graphs satisfying these properties are formally referred to as simple and undirected.
+    
+    The adjacency matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ of the graph
+    captures the connectivity among its vertices, with the entry
+    $\mathbf{A}_{ij}$ defined as:
+    \begin{equation}
+      \mathbf{A}_{ij} =
+        \begin{cases}
+            a_{ij}, & \text{if } e_{i,j} \in \mathcal{E},\\
+            0, & \text{otherwise}.
+        \end{cases}
+    \end{equation}
+    
+    Here, $a_{ij}$ represents the weight of the edge $e_{i,j}$, which is a nonnegative real-valued number indicating the strength of the connection
+    between vertices $v_i$ and $v_j$. In unweighted graphs, $a_{ij}$ simplifies to 1 for all connected pairs.
+    For the simple undirected graphs considered here, the adjacency matrix is symmetric, satisfying $a_{ij} = a_{ji} = 1$ with a zero diagonal, i.e., $a_{ii} = 0$.
+    The degree of a vertex $v_i$, denoted as $d_i = \sum^n_j a_{ij}$, represents the sum of the weights of edges incident to $v_i$. In unweighted graphs, $d_i$ reduces to the number of edges connecting $v_i$, effectively counting its adjacent
+    neighbors. The degree matrix $\mathbf{D} \in \mathbb{R}^{n \times n}$ is defined
+    as a diagonal matrix, where the diagonal entries correspond to the degrees of all vertices $d_1, \dots, d_n$.
+    
+    As an example, for the mesh and the corresponding graph depicted in \Cref{fig:mesh_and_graph}, the adjacency matrix $\mathbf{A}$ and the degree matrix $\mathbf{D}$ are given as follows:
+    
+    \vspace{5mm}
+    
+    \input{math/matrices_A_D}
+    
+    \vspace{5mm}
+    
+    We refer the reader to~\cite{doi:https://doi.org/10.1002/9781118601181.ch1} for a detailed overview of commonly used matrices and objectives functions in graph partitioning.
+\end{document}

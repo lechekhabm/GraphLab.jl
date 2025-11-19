@@ -1,22 +1,33 @@
 \begin{thebibliography}{10}
 
+\bibitem{10.1093/nar/gkx1313}
+Ariful Azad, Georgios~A Pavlopoulos, Christos~A Ouzounis, Nikos~C Kyrpides, and
+  Aydin Buluç.
+{HipMCL}: a high-performance parallel implementation of the markov clustering
+  algorithm for large-scale networks.
+{\em Nucleic Acids Research}, 46(6):e33--e33, 01 2018.
+
 \bibitem{doi:https://doi.org/10.1002/9781118601181.ch1}
 Charles-Edmond Bichot.
 {\em General Introduction to Graph Partitioning}, chapter~1, pages 1--25.
 John Wiley \& Sons, Ltd, 2013.
 
-\bibitem{10.1145/2503210.2503293}
-Erik~G. Boman, Karen~D. Devine, and Sivasankaran Rajamanickam.
-Scalable matrix computations on large scale-free graphs using 2d graph
-  partitioning.
-In {\em Proceedings of the International Conference on High Performance
-  Computing, Networking, Storage and Analysis}, SC '13, New York, NY, USA,
-  2013. Association for Computing Machinery.
+\bibitem{Bollhöfer2020}
+Matthias Bollh{\"o}fer, Olaf Schenk, Radim Janalik, Steve Hamm, and Kiran
+  Gullapalli.
+{\em State-of-the-Art Sparse Direct Solvers}, pages 3--33.
+Springer International Publishing, Cham, 2020.
+
+\bibitem{bondy1976graph}
+John~Adrian Bondy, Uppaluri Siva~Ramachandra Murty, et~al.
+{\em Graph theory with applications}, volume 290.
+Macmillan London, 1976.
 
 \bibitem{buluc2015recentadvancesgraphpartitioning}
-Aydin Buluc, Henning Meyerhenke, Ilya Safro, Peter Sanders, and Christian
-  Schulz.
-Recent advances in graph partitioning, 2015.
+Ayd{\i}n Bulu{\c{c}}, Henning Meyerhenke, Ilya Safro, Peter Sanders, and
+  Christian Schulz.
+{\em Recent Advances in Graph Partitioning}, pages 117--158.
+Springer International Publishing, Cham, 2016.
 
 \bibitem{MoreRecentAdvances}
 \"{U}mit \c{C}ataly\"{u}rek, Karen Devine, Marcelo Faraj, Lars Gottesb\"{u}ren,
@@ -25,10 +36,32 @@ Recent advances in graph partitioning, 2015.
 More recent advances in (hyper)graph partitioning.
 {\em ACM Comput. Surv.}, 55(12), March 2023.
 
+\bibitem{10.5555/1614191}
+Thomas~H. Cormen, Charles~E. Leiserson, Ronald~L. Rivest, and Clifford Stein.
+{\em Introduction to Algorithms, Third Edition}.
+The MIT Press, 3rd edition, 2009.
+
+\bibitem{DanischKrumbiegel2021}
+Simon Danisch and Julius Krumbiegel.
+{Makie.jl}: Flexible high-performance data visualization for {Julia}.
+{\em Journal of Open Source Software}, 6(65):3349, 2021.
+
+\bibitem{10.1145/2049662.2049663}
+Timothy~A. Davis and Yifan Hu.
+The university of florida sparse matrix collection.
+{\em ACM Trans. Math. Softw.}, 38(1), December 2011.
+
 \bibitem{elsner1997graph}
 Ulrich Elsner.
-Graph partitioning-a survey.
-1997.
+Graph partitioning - a survey.
+Preprintreihe des Chemnitzer SFB 393 97-27, Technische Universit{\"a}t
+  Chemnitz, Chemnitz, 1997.
+
+\bibitem{Graphs2021}
+James Fairbanks, Mathieu Besan{\c{c}}on, Sch{\"o}lly Simon, J{\'u}lio Hoffiman,
+  Nick Eubank, and Stefan Karpinski.
+{JuliaGraphs/Graphs.jl}: an optimized graphs package for the {Julia}
+  programming language, 2021.
 
 \bibitem{farhat1993automatic}
 Charbel Farhat and Marc Lesoinne.
@@ -48,10 +81,20 @@ Alan George.
 Nested dissection of a regular finite element mesh.
 {\em SIAM Journal on Numerical Analysis}, 10(2):345--363, 1973.
 
+\bibitem{gilbert_2020_3746723}
+John~R. Gilbert, Yingzhou Li, and Shang-Hua Teng.
+Mesh partitioning toolbox -- meshpart, April 2020.
+\url{https://github.com/YingzhouLi/meshpart}.
+
 \bibitem{doi:10.1137/S1064827594275339}
 John~R. Gilbert, Gary~L. Miller, and Shang-Hua Teng.
 Geometric mesh partitioning: Implementation and experiments.
 {\em SIAM Journal on Scientific Computing}, 19(6):2091--2110, 1998.
+
+\bibitem{golub2013matrix}
+Gene~H Golub and Charles~F Van~Loan.
+{\em Matrix computations}.
+JHU press, 2013.
 
 \bibitem{doi:10.1137/S1064827595287997}
 George Karypis and Vipin Kumar.
@@ -63,10 +106,61 @@ Brian~Wilson Kernighan and Shen Lin.
 An efficient heuristic procedure for partitioning graphs.
 {\em The Bell System Technical Journal}, 49(2):291--307, 1970.
 
+\bibitem{lanczos1950iteration}
+Cornelius Lanczos.
+An iteration method for the solution of the eigenvalue problem of linear
+  differential and integral operators.
+{\em Journal of Research of the National Bureau of Standards}, 45(4):255,
+  October 1950.
+
+\bibitem{10938528}
+Malik Lechekhab, Dimosthenis Pasadakis, and Olaf Schenk.
+Multilevel diffusion based spectral graph clustering.
+In {\em 2024 IEEE High Performance Extreme Computing Conference (HPEC)}, pages
+  1--7, 2024.
+
+\bibitem{lehoucq1998arpack}
+Richard~B. Lehoucq, Danny~C. Sorensen, and Chao Yang.
+{\em ARPACK Users' Guide: Solution of Large-Scale Eigenvalue Problems with
+  Implicitly Restarted Arnoldi Methods}, volume~6 of {\em Software,
+  Environments, and Tools}.
+Society for Industrial and Applied Mathematics, Philadelphia, PA, 1998.
+
+\bibitem{7859409}
+Henning Meyerhenke, Peter Sanders, and Christian Schulz.
+Parallel graph partitioning for complex networks.
+{\em IEEE Transactions on Parallel and Distributed Systems}, 28(9):2625--2638,
+  2017.
+
 \bibitem{Newman_2013}
 M.~E.~J. Newman.
 Community detection and graph partitioning.
 {\em EPL (Europhysics Letters)}, 103(2):28003, July 2013.
+
+\bibitem{Pasadakis23}
+Dimosthenis Pasadakis, Matthias Bollhöfer, and Olaf Schenk.
+Sparse quadratic approximation for graph learning.
+{\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  45(9):11256--11269, 2023.
+
+\bibitem{pitsianis2019sgtsnepi}
+Nikos Pitsianis, Alexandros-Stavros Iliopoulos, Dimitris Floros, and Xiaobai
+  Sun.
+{Spaceland Embedding of Sparse Stochastic Graphs}.
+In {\em IEEE High Performance Extreme Computing Conference}, 11 2019.
+
+\bibitem{Rossetti2019}
+Giulio Rossetti, Letizia Milli, and R{\'e}my Cazabet.
+{CDLIB}: a python library to extract, compare and evaluate communities from
+  complex networks.
+{\em Applied Network Science}, 4(1):52, 2019.
+
+\bibitem{DBLP:conf/wea/SandersS13}
+Peter Sanders and Christian Schulz.
+Think locally, act globally: Highly balanced graph partitioning.
+In {\em Experimental Algorithms, 12th International Symposium, {SEA} 2013,
+  Rome, Italy, June 5-7, 2013. Proceedings}, volume 7933, pages 164--175.
+  Springer, 2013.
 
 \bibitem{Sasidharan15}
 Aparna Sasidharan, John~M. Dennis, and Marc Snir.
@@ -93,13 +187,8 @@ How good is recursive bisection?
 {\em SIAM Journal on Scientific Computing}, 18(5):1436--1445, 1997.
 
 \bibitem{storer2012introduction}
-James~Andrew Storer.
-{\em An introduction to data structures and algorithms}.
-Springer Science \& Business Media, 2012.
-
-\bibitem{turner2020mappingmatchingsminimumvertex}
-Jacob Turner.
-Mapping matchings to minimum vertex covers: K\"{o}nig's theorem revisited,
-  2020.
+James~A. Storer.
+{\em An Introduction to Data Structures and Algorithms}.
+Birkh{\"a}user, Boston, MA, 2002.
 
 \end{thebibliography}

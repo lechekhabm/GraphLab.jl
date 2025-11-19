@@ -1,0 +1,35 @@
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.23\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,  trim={100pt 74pt 0 0}, clip]{images/ex1_airfoil1_coordinate.png}
+        \caption{Coordinate bisection, RCut = 0.09}
+        \label{fig:ex1_coord}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.23\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,  trim={100pt 74pt 0 0}, clip]{images/ex1_airfoil1_inertial.png}
+        \caption{Inertial bisection, RCut = 0.09}
+        \label{fig:ex1_inertial}
+    \end{subfigure}
+
+    \vskip\baselineskip  % Adds vertical space between the rows
+
+    \begin{subfigure}[b]{0.23\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,  trim={100pt 74pt 0 0}, clip]{images/ex1_airfoil1_spectral.png}
+        \caption{Spectral bisection, RCut = 0.12}
+        \label{fig:ex1_spectral}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.23\textwidth}
+        \centering
+        \includegraphics[width=\textwidth,  trim={100pt 74pt 0 0}, clip]{images/ex1_airfoil1_metis.png}
+        \caption{Bisection using \texttt{METIS}, RCut = 0.07}
+        \label{fig:ex1_metis}
+    \end{subfigure}
+
+    \caption{Visualization of four graph bisection methods applied to the \texttt{airfoil1} mesh (4253 nodes and 12289 edges) \cite{10.1145/2049662.2049663}, illustrating the different partitioning results and the associated ratio cut.}
+    \label{fig:ex1_results}
+\end{figure}
