@@ -45,77 +45,153 @@ function _centerpoint(X::Matrix{Float64}, sample_size::Int)
     n, d = size(X)
     idx = rand(1:n, min(sample_size, n))
     sample = X[idx, :]
-    return mapslices(median, sample; dims=1)[:]
+    c = mapslices(median, sample; dims=1)[:]
+    return c
 end
 
 
-"""
-Conformal map that moves `center` to the origin on the unit sphere.
+# """
+# Conformal map that moves `center` to the origin on the unit sphere.
 
-Arguments:
-- center::Vector{Float64}: _centerpoint on the sphere (length d+1)
-- X::Matrix{Float64}: n × (d+1) matrix of lifted points
+# Arguments:
+# - center::Vector{Float64}: _centerpoint on the sphere (length d+1)
+# - X::Matrix{Float64}: n × (d+1) matrix of lifted points
 
-Returns:
-- Y::Matrix{Float64}: transformed points (same size as X)
-"""
+# Returns:
+# - Y::Matrix{Float64}: transformed points (same size as X)
+# """
+# function _conmap(c::Vector{Float64}, xyz::Matrix{Float64})
+#     d = size(xyz, 2)
+  
+#     # Compute reflection and stretch
+#     Q, r = _reflector(c)
+#     alpha = sqrt((1+r)/(1-r))
+  
+#     # Reflect
+#     xyzref = xyz * Q;
+  
+#     # Handle north pole in the stereographic projection
+#     norths = findall(x -> abs(x - 1) < sqrt(eps()), xyzref[:, d]) 
+#     if !isempty(norths)
+#       xyzn = xyzref[norths, :]
+#       # xyzref[norths, :] = zeros(length(norths), d)
+#       xyzref[norths, :] .= 0
+#     end
+  
+#     xyref = _stereodown(xyzref)
+  
+#     # Stretch
+#     xymap = xyref ./ alpha
+#     xyzmap = _stereoup(xymap)
+  
+#     if !isempty(norths)
+#       xyzmap[norths,:] = xyzn
+#     end
+
+#     println(xyzmap)
+  
+#     return xyzmap, xymap
+# end
+
 function _conmap(c::Vector{Float64}, xyz::Matrix{Float64})
     d = size(xyz, 2)
-  
-    # Compute reflection and stretch
+
+    # 1. reflection / rotation
     Q, r = _reflector(c)
-    alpha = sqrt((1+r)/(1-r))
-  
-    # Reflect
-    xyzref = xyz * Q;
-  
-    # Handle north pole in the stereographic projection
-    norths = findall(x -> abs(x - 1) < sqrt(eps()), xyzref[:, d]) 
-    if isempty(norths)
-      xyzn = xyzref[norths, :]
-      xyzref[norths, :] = zeros(length(norths), d)
+    alpha = sqrt((1 + r) / (1 - r))   # stretch factor (as in the original code)
+
+    # 2. rotate all points
+    xyzref = xyz * Q
+
+    # 3. handle north pole (z == 1) specially to avoid stereographic blowup
+    norths = findall(x -> abs(x - 1) < sqrt(eps(Float64)), xyzref[:, d])
+    xyzn = xyzref[norths, :]
+    if !isempty(norths)
+        xyzref[norths, :] .= 0
     end
-  
+
+    # 4. stereographic projection down to R^d
     xyref = _stereodown(xyzref)
-  
-    # Stretch
+
+    # 5. stretch in the plane
     xymap = xyref ./ alpha
+
+    # 6. lift back to the sphere
     xyzmap = _stereoup(xymap)
-  
-    if isempty(norths)
-      xyzmap[norths,:] = xyzn
+
+    # 7. restore exact north-pole points
+    if !isempty(norths)
+        xyzmap[norths, :] .= xyzn
     end
-  
+
     return xyzmap, xymap
 end
 
 
+# """
+#     _reflector(c::AbstractVector)
+
+# Constructs a Householder reflection matrix `Q` that maps the input vector `c` (reversed)
+# to a multiple of the first basis vector. This is useful for aligning a given direction with
+# a coordinate axis in geometric transformations.
+
+# # Arguments
+# - `c::AbstractVector`: A real vector of length `d`.
+
+# # Returns
+# - `Q::Matrix{Float64}`: A `d × d` orthogonal matrix representing the Householder reflection.
+# - `r::Float64`: The leading entry of the reflected vector (i.e., norm or signed component).
+
+# # Notes
+# - Internally, this performs a QR decomposition of the reversed vector `c[end:-1:1]`
+#   and adjusts the result to restore the original ordering.
+# """
+# function _reflector(c)
+#     d = length(c)
+#     p = collect(d:-1:1)
+#     Q, r = qr(c[collect(d:-1:1)])
+#     Q = Q[p, p]
+#     r = r[1]
+#     return Q, r
+# end
+
 """
-    _reflector(c::AbstractVector)
+    _reflector(c)
 
-Constructs a Householder reflection matrix `Q` that maps the input vector `c` (reversed)
-to a multiple of the first basis vector. This is useful for aligning a given direction with
-a coordinate axis in geometric transformations.
+Householder reflection matrix Q such that
 
-# Arguments
-- `c::AbstractVector`: A real vector of length `d`.
+    Q * c = t,    where t = (0, ..., 0, r),  r = ‖c‖₂
 
-# Returns
-- `Q::Matrix{Float64}`: A `d × d` orthogonal matrix representing the Householder reflection.
-- `r::Float64`: The leading entry of the reflected vector (i.e., norm or signed component).
+and Q is orthogonal (Q'Q = I). This matches the "rotate so that the
+centerpoint becomes a point (0,...,0,T) on the (d+1)-st axis)" step.
 
-# Notes
-- Internally, this performs a QR decomposition of the reversed vector `c[end:-1:1]`
-  and adjusts the result to restore the original ordering.
+Returns:
+- Q :: Matrix{Float64} (d × d)
+- r :: Float64          (‖c‖₂)
 """
-function _reflector(c)
+function _reflector(c::AbstractVector)
     d = length(c)
-    p = collect(d:-1:1)
-    Q, r = qr(c[collect(d:-1:1)])
-    Q = Q[p, p]
-    r = r[1]
+    r = norm(c)
+
+    if r == 0
+        return Matrix{Float64}(I, d, d), 0.0
+    end
+
+    t = zeros(Float64, d)
+    t[end] = r                       # target vector (0,...,0,r)
+
+    v = c .- t
+    nv2 = dot(v, v)
+
+    if nv2 == 0
+        # c already aligned with last axis
+        return Matrix{Float64}(I, d, d), r
+    end
+
+    Q = Matrix{Float64}(I, d, d) .- 2.0 * (v * v') / nv2
     return Q, r
 end
+
 
 
 """
@@ -137,6 +213,7 @@ in ℝ^{d} (embedded in ℝ^{d+1}) back to Euclidean space ℝ^{d}.
 function _stereodown(xyz)
     n, dim = size(xyz)
     xy = xyz[:, 1:dim-1] ./ (1 .- xyz[:, dim])  # broadcasting does the repetition
+    
   
     return xy
 end

@@ -11,27 +11,6 @@
 \RequirePackage{latexsym}
 \RequirePackage{url}
 
-% --- TikZ and pgfplots setup ---
-\RequirePackage{pgfplots}
-\pgfplotsset{compat=1.18}
-\RequirePackage{verbatim}         % For verbatim environments
-\usetikzlibrary{patterns}         % For patterned bars or fills
-
-% --- Custom color palette ---
-\RequirePackage{xcolor}
-\definecolor{mycolor1}{HTML}{ca0020}
-\definecolor{mycolor2}{HTML}{f4a582}
-\definecolor{mycolor3}{HTML}{58d68d}
-\definecolor{mycolor4}{HTML}{92c5de}
-\definecolor{mycolor5}{HTML}{0571b0}
-\definecolor{mycolor6}{HTML}{a6611a}
-\definecolor{mycolor7}{HTML}{dfc27d}
-
-% --- Custom TikZ include macro ---
-\newcommand{\inputtikz}[2]{%
-  \input{#1/#2.tikz}%
-}
-
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 
@@ -159,8 +138,8 @@
 \def\sectionfont{\fontfamily{ptm}\fontsize{9}{12}\capsshape\selectfont\raggedright} %\mathversion{rmnormal}
 \def\subsectionfont{\fontfamily{ptm}\fontsize{9}{12}\selectfont} %\mathversion{rmnormal}
 \def\figcaptionfont{\fontsize{8}{10}\selectfont\mathversion{normal}}%
-% \def\subcaptionfont{\fontsize{8}{10}\selectfont\mathversion{normal}}%
-% \def\subcaption#1{{\centering\subcaptionfont#1\par}}
+\def\subcaptionfont{\fontsize{8}{10}\selectfont\mathversion{normal}}%
+\def\subcaption#1{{\centering\subcaptionfont#1\par}}
 %
 \def\tablefont{\fontsize{8}{10}\selectfont}%
 \def\tablecaptionfont{\fontsize{9}{11}\selectfont\centering}%
@@ -959,6 +938,11 @@ to\hsize{\if@nfeven\else\hfil\fi\box\@tempboxa\if@nfeven\hfil\fi}
 \usepackage{jlcode}
 
 \usepackage{authblk}
+
+% Fixes issue related to listing captions: https://github.com/JuliaCon/JuliaConSubmission.jl/issues/31
+\usepackage{caption}
+\captionsetup[lstlisting]{singlelinecheck=false, margin=0pt}
+\renewcommand\lstlistingname{Code}
 
 \endinput
 

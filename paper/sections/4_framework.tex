@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Framework
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\documentclass[../paper.tex]{subfiles}
-\begin{document}
+% \documentclass[../paper.tex]{subfiles}
+% \begin{document}
     % While a variety of algorithms exist for performing graph bisection, as discussed in \Cref{sec:algo},
     % an integrated framework is essential to streamline the entire workflow,
     % from graph creation and algorithm execution to benchmarking and visualization.
@@ -92,12 +92,13 @@
     = \bigl|\{(u,v)\in E : u\in\mathcal{V}_i, v\in\mathcal{V}_j, i\ne j\}\bigr|$.
     % $\operatorname{cut} = \sum_{i\neq j}|\{(u, v)  \mid u \in \mathcal{V}_i, v\in \mathcal{V}_j\}|$
     The balance ratio quantifies the distribution of vertices among partitions. Let $n$ be the total number of vertices, $k$ the number of partitions, and $|\mathcal{V}_i|$ the size of partition $\mathcal{V}_i$. The ideal partition size is $n/k$, and the node balance ratio is defined as $\operatorname{bal} = \frac{\max_i |\mathcal{V}_i|}{n/k}$. A perfectly balanced partitioning results in $\operatorname{bal} = 1$, while larger values indicate increasing imbalance.
-    To evaluate both separation quality and partition balance, two common normalized metrics are used, the Normalized Cut, 
+    To evaluate both separation quality and partition balance, two common normalized metrics are used.
+    The Normalized Cut is defined as  
     $\operatorname{NCut} = \sum_{i=1}^k \frac{\operatorname{cut}(\mathcal{V}_i,\bar{\mathcal{V}}_i)}{\operatorname{vol}(\mathcal{V}_i)}$,
-    % $\operatorname{NCut} = \sum_{i=1}^k \operatorname{cut}(\mathcal{V}_i, \bar{\mathcal{V}}_i)/\operatorname{vol}(\mathcal{V}_i)$
     where 
-    $\operatorname{vol}(\mathcal{V}_i) = \sum_{v\in\mathcal{V}_i} \deg(v)$,
-    and the Ratio Cut, $\operatorname{RCut} = \sum_{i=1}^k \frac{\operatorname{cut}(\mathcal{V}_i,\bar{\mathcal{V}}_i)}{|\mathcal{V}_i|}$. Both metrics penalize unbalanced partitions and favor cuts that correspond to sparse inter-partition connections in the graph. The provided benchmarking example scripts are:
+    $\operatorname{vol}(\mathcal{V}_i) = \sum_{v\in\mathcal{V}_i} \deg(v)$
+    and $\bar{\mathcal{V}}_i$ denotes the complement of $\mathcal{V}_i$ in $\mathcal{V}$, i.e., $\bar{\mathcal{V}}_i = \mathcal{V} \setminus \mathcal{V}_i$.
+    The Ratio Cut is defined as $\operatorname{RCut} = \sum_{i=1}^k \frac{\operatorname{cut}(\mathcal{V}_i,\bar{\mathcal{V}}_i)}{|\mathcal{V}_i|}$. Both metrics penalize unbalanced partitions and favor cuts that correspond to sparse inter-partition connections in the graph. The provided benchmarking example scripts are:
    
     
     \begin{enumerate}
@@ -274,4 +275,4 @@
     
     % \subsubsection{MDC --- Multilevel Diffusion Clustering}
     % The \texttt{MDC}\footnote{\url{https://github.com/lechekhabm/MDC}\add{! repo needs to be cleaned or removed from the paper}} algorithm leverages diffusion principles to minimize the normalized cut, adds flexibility through a diffusion parameter, and retrieves high-quality partitions in a multilevel fashion without computing eigenpairs\cite{Lechekhab2024MDC}. Comparison with modern multilevel multilevel graph clustering packages reveal that this method can improve the clustering of graphs both in terms of balanced cut criteria and classification accuracy.
-\end{document}
+% \end{document}

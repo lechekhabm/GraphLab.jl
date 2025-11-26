@@ -36,16 +36,7 @@
 \PassOptionsToPackage{T1}{fontenc}
 \RequirePackage{fontenc}             % for the « and » symbols
 \RequirePackage{calc}                % for the creation of the code box
-\RequirePackage{amsmath}
-\RequirePackage{svg}
-\RequirePackage{subcaption}
-\RequirePackage{cleveref}
-\RequirePackage{algorithm}
-\RequirePackage{algorithmicx}
-\RequirePackage{algpseudocode}
 
-\RequirePackage{subfiles}
-\RequirePackage{placeins}
 
 
 
@@ -200,7 +191,7 @@ morestring=[s]{L"}{"},%
 
 
 % defining the \addlitjlbase and \addlitjlstring commands,
-% which help a user to fix some of the known managable issues
+% which help a user to fix some of the known manageable issues
 \def\addToLiterate#1{%
 \protected@edef\lst@literate{%
 \unexpanded\expandafter{\lst@literate}\unexpanded{#1}}}
@@ -414,9 +405,6 @@ morestring=[s]{L"}{"},%
 \lstset{upquote=true}
 \lstset{tabsize=4}
 \lstset{aboveskip={1.5\baselineskip},belowskip={1.5\baselineskip}}
-\lstset{breaklines=true} % Enable automatic line breaking in code listings
-\lstset{postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$}\space}}
-
 
 % creating the code box
 \lstset{backgroundcolor=\color{jlbackground}, rulecolor=\color{jlrule}}

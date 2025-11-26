@@ -2,6 +2,22 @@
 % JuliaCon proceedings template
 \documentclass{juliacon}
 
+% math
+\usepackage{amsmath}
+
+% algorithm floats + pseudocode
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+% subfigures
+\let\subcaption\relax
+\let\subfloat\relax
+\usepackage{subcaption}
+
+% refs
+\usepackage{cleveref}
+\usepackage{placeins}
+
 % Define the \add command
  \newcommand{\add}[1]{\textit{\textcolor{blue}{#1}}}
 \newcommand{\dms}[1]{{\color{blue} \sf DMS: [#1]}}
@@ -26,32 +42,32 @@
 \maketitle
 
 \begin{abstract}
-    \subfile{sections/0_abstract}
+    \input{sections/0_abstract}
 \end{abstract}
 
 \section{Introduction}
-    \subfile{sections/1_introduction}
+    \input{sections/1_introduction}
 
 \section{Background on graph partitioning}
     \label{sec:background}
-    \subfile{sections/2_background}
+    \input{sections/2_background}
 
 \section{Overview of implemented partitioning algorithms}
     \label{sec:algo}
-    \subfile{sections/3_algorithms}
+    \input{sections/3_algorithms}
 
 \section{Framework and tools for graph bisection}
     \label{sec:framwork}
-    \subfile{sections/4_framework}
+    \input{sections/4_framework}
 
 \section{Installation and demonstration}
     \label{sec:demo}
-    \subfile{sections/5_installation}
+    \input{sections/5_installation}
 
 
 \section{Conclusion and future works}
     \label{sec:conclusion}
-    \subfile{sections/6_conclusion}
+    \input{sections/6_conclusion}
 \FloatBarrier
 \section{Acknowledgment}
 The authors gratefully acknowledge the scientific support and HPC resources provided by the Erlangen National High Performance Computing Center (NHR@FAU) of the Friedrich-Alexander-Universität Erlangen-Nürnberg (FAU) under the NHR project j101df. NHR funding is provided by federal and Bavarian state authorities. NHR@FAU hardware is partially funded by the German Research Foundation (DFG) – 440719683

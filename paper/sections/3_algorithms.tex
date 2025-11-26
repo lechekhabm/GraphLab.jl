@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Algorithms
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\documentclass[../paper.tex]{subfiles}
-\begin{document}
+% \documentclass[../paper.tex]{subfiles}
+% \begin{document}
     This section provides an overview of the partitioning algorithms implemented
     in the framework, detailing their underlying principles.
     Through illustrative examples and visual representations, we highlight the behavior of each algorithm.
@@ -105,7 +105,7 @@
     \end{equation}
     so that the distribution is centered at the origin and confined within a unit-scale region.
     Each normalized point $\tilde{P}_i$ is then mapped to the unit sphere,
-    $Z_i \in \mathcal{S}^d$, via stereographic projection.
+    $Z_i \in \mathcal{S}^d \subset{\mathbb{R}^{d+1}}$, via stereographic projection.
 
     To identify separators, the algorithm selects $s$ random center points on the sphere.
     Each center $c$ is computed as the coordinate-wise median of a randomly sampled subset of vertices and then moved to the origin through a conformal transformation of the sphere.
@@ -116,12 +116,26 @@
     \end{equation}
     The corresponding edge cut is evaluated, and the partition with the smallest cut is retained.
 
+    % 
+    \begin{figure}[t]
+    \centering
+    \includegraphics[width=1.0\linewidth]{images/rsphere.png}
+    \caption{
+    % Spectral embedding and random sphere partitioning: the graph is first embedded into a 2-dimensional
+    % spectral space using the eigenvectors associated with the second and third smallest eigenvalues of the graph Laplacian. A separator (shown in red)
+    % is then selected using the randomized sphere method and mapped back onto original graph.
+    Random sphere partitioning: the 2D coordinates of \texttt{mesh1e1}~\cite{10.1145/2049662.2049663} are normalized and stereographically lifted to the sphere $\mathcal{S}^2 \subset \mathbb{R}^3$, where a centerpoint $c$ is computed and mapped to the origin via a conformal transformation. A direction $\mathbf{u}$ defining a circle separator (shown in red) is then selected, partitioning the spherical embedding. The resulting partition is projected onto the original layout. 
+    }
+    \label{fig:rsphere}
+    \end{figure}
+    % 
+
     In addition to spherical separators, the algorithm also considers random linear cuts in the original
     Euclidean space, defined by hyperplanes
     orthogonal to random directions and positioned at the median projected vertex coordinates.
     The final output is the spherical or linear bisection minimizing the total edge cut.
 
-    The random spherical bisection runs in $O(sr(nd+m))$, where $s$ is the number of random centers and $r$ the number of random directions per center. For fixed $d$,$s$, and $r$, this reduces to $O(n+m)$.
+    The random spherical bisection runs in $O(sr(nd+m))$, where $s$ is the number of random centers and $r$ the number of random directions per center. For fixed $d$, $s$, and $r$, this reduces to $O(n+m)$.
     The algorithm is described in \Cref{alg:sphere} and can be applied with:
 
     \begin{lstlisting}[language=Julia]
@@ -129,6 +143,8 @@
     \end{lstlisting}
 
     An optional argument \texttt{ntrials} specifies the number of random directions to try.
+    % A 2-dimensional geometric illustration of the spherical bisection procedure is provided in \Cref{fig:rsphere}.
+    A geometric illustration of the random sphere bisection procedure, applied to 2-dimensional input coordinates and visualized on the sphere $\mathcal{S}^2 \subset \mathbb{R}^3$, is provided in \Cref{fig:rsphere}.
 
     \input{algorithms/sphere_alg}
     
@@ -242,7 +258,7 @@
     \begin{figure}[t]
     \centering
     \includegraphics[width=1.0\linewidth]{images/airfoil_ev.drawio.png}
-    \caption{Spectral embedding and random sphere partitioning: the graph is first embedded into a 2-dimensional
+    \caption{Spectral embedding and random sphere partitioning: the \texttt{airfoil1}~\cite{10.1145/2049662.2049663} graph is first embedded into a 2-dimensional
     spectral space using the eigenvectors associated with the second and third smallest eigenvalues of the graph Laplacian. A separator (shown in red)
     is then selected using the randomized sphere method and mapped back onto original graph.}
     \label{fig:spectral-embedding}
@@ -336,4 +352,4 @@
 
     The inputs are the adjacency matrix \texttt{A}, any partitioning \texttt{method} from \texttt{GraphLab.jl}, and the node coordinates \texttt{coords} if required by the partitioner. An optional argument \texttt{minsep} specifies the minimum separator size (default: 5). The output is a permutation vector representing the nested dissection ordering.
     
-\end{document}
+% \end{document}
