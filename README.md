@@ -2,6 +2,7 @@
 [![CI](https://github.com/lechekhabm/GraphLab.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/lechekhabm/GraphLab.jl/actions/workflows/ci.yml)
 [![Documentation](https://github.com/lechekhabm/GraphLab.jl/actions/workflows/docs.yml/badge.svg)](https://lechekhabm.github.io/GraphLab.jl/dev)
 [![License](https://img.shields.io/github/license/lechekhabm/GraphLab.jl)](https://github.com/lechekhabm/GraphLab.jl/blob/main/LICENSE)
+[![status](https://proceedings.juliacon.org/papers/f01279a1591c7ab8171510bf63c61d56/status.svg)](https://proceedings.juliacon.org/papers/f01279a1591c7ab8171510bf63c61d56)
 
 ## Overview
 
@@ -28,6 +29,8 @@ The package includes utilities for:
 * Visualizing partitioned graphs.
 * Benchmarking and comparing with external partitioners.
 ``GraphLab.jl`` aims to support the educational and exploratory needs of learners, researchers, and the Julia graph community.
+
+"GraphLab.jl: A Julia Framework for Graph Partitioning Algorithms" has been [presented at JuliaCon Local Paris 2025](https://www.youtube.com/watch?v=4_7BiFazfKg). 
 
 Feel free to contribute or report issues on the GitHub repository for ``GraphLab.jl``. Happy partitioning!
 
