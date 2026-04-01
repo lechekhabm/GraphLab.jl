@@ -95,7 +95,7 @@ The script evaluates these methods on a series of different graphs, providing in
   <tr>
     <!-- Coordinate Bisection -->
     <td style="width:50%; text-align: center; padding: 0;">
-      <img src="examples/ex1_airfoil1_coordinate.png" alt="Coordinate Bisection" style="width:100%; margin:0; padding:0;">
+      <img src="/paper/images/ex1_airfoil1_coordinate.png" alt="Coordinate Bisection" style="width:100%; margin:0; padding:0;">
       <p style="margin: 0; padding: 0;"><em>Coordinate Bisection</em></p>
     </td>
     <!-- Inertial Bisection -->
