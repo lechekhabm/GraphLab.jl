@@ -100,19 +100,19 @@ The script evaluates these methods on a series of different graphs, providing in
     </td>
     <!-- Inertial Bisection -->
     <td style="width:50%; text-align: center; padding: 0;">
-      <img src="examples/ex1_airfoil1_inertial.png" alt="Inertial Bisection" style="width:100%; margin:0; padding:0;">
+      <img src="/paper/images/ex1_airfoil1_inertial.png" alt="Inertial Bisection" style="width:100%; margin:0; padding:0;">
       <p style="margin: 0; padding: 0;"><em>Inertial Bisection</em></p>
     </td>
   </tr>
   <tr>
     <!-- Spectral Bisection -->
     <td style="width:50%; text-align: center; padding: 0;">
-      <img src="examples/ex1_airfoil1_spectral.png" alt="Spectral Bisection" style="width:100%; margin:0; padding:0;">
+      <img src="/paper/images/ex1_airfoil1_spectral.png" alt="Spectral Bisection" style="width:100%; margin:0; padding:0;">
       <p style="margin: 0; padding: 0;"><em>Spectral Bisection</em></p>
     </td>
     <!-- METIS Bisection -->
     <td style="width:50%; text-align: center; padding: 0;">
-      <img src="examples/ex1_airfoil1_metis.png" alt="METIS Bisection" style="width:100%; margin:0; padding:0;">
+      <img src="/paper/images/ex1_airfoil1_metis.png" alt="METIS Bisection" style="width:100%; margin:0; padding:0;">
       <p style="margin: 0; padding: 0;"><em>METIS</em></p>
     </td>
   </tr>
@@ -147,24 +147,24 @@ This example demonstrates recursive bisection using different methods, including
   <tr>
     <!-- Recursive Coordinate Bisection -->
     <td style="width:50%; text-align: center; padding: 10px;">
-      <img src="examples/ex2_Swiss_graph_coordinate.png" alt="Recursive Coordinate Bisection" style="width:100%;">
+      <img src="/paper/images/ex2_Swiss_graph_coordinate.png" alt="Recursive Coordinate Bisection" style="width:100%;">
       <p style="font-size: 12px;"><em>Recursive Coordinate Bisection</em></p>
     </td>
     <!-- Recursive Inertial Bisection -->
     <td style="width:50%; text-align: center; padding: 10px;">
-      <img src="examples/ex2_Swiss_graph_inertial.png" alt="Recursive Inertial Bisection" style="width:100%;">
+      <img src="/paper/images/ex2_Swiss_graph_inertial.png" alt="Recursive Inertial Bisection" style="width:100%;">
       <p style="font-size: 12px;"><em>Recursive Inertial Bisection</em></p>
     </td>
   </tr>
   <tr>
     <!-- Recursive Spectral Bisection -->
     <td style="width:50%; text-align: center; padding: 10px;">
-      <img src="examples/ex2_Swiss_graph_spectral.png" alt="Recursive Spectral Bisection" style="width:100%;">
+      <img src="/paper/images/ex2_Swiss_graph_spectral.png" alt="Recursive Spectral Bisection" style="width:100%;">
       <p style="font-size: 12px;"><em>Recursive Spectral Bisection</em></p>
     </td>
     <!-- Recursive METIS Bisection -->
     <td style="width:50%; text-align: center; padding: 10px;">
-      <img src="examples/ex2_Swiss_graph_metis_rec.png" alt="Recursive METIS Bisection" style="width:100%;">
+      <img src="/paper/images/ex2_Swiss_graph_metis_rec.png" alt="Recursive METIS Bisection" style="width:100%;">
       <p style="font-size: 12px;"><em>Recursive METIS Bisection (K-way is also available)</em></p>
     </td>
   </tr>
