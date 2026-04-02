@@ -1,3 +1,4 @@
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 GraphLab = "d38e4d1f-8cde-4b91-b345-2d365d6c1ed6"
+Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
