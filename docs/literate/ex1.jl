@@ -131,4 +131,7 @@ header = [
     "EC (METIS)", "NC (METIS)", "RC (METIS)", "Bal. (METIS)"
 ]
 
-pretty_table(final_results; column_labels=header)
+io = IOBuffer()
+pretty_table(io, final_results; column_labels=header, backend=:text)
+println(String(take!(io)))
+nothing
