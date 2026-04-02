@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Example 1 · GraphLab.jl</title><meta name="title" content="Example 1 · GraphLab.jl"/><meta property="og:title" content="Example 1 · GraphLab.jl"/><meta property="twitter:title" content="Example 1 · GraphLab.jl"/><meta name="description" content="Documentation for GraphLab.jl."/><meta property="og:description" content="Documentation for GraphLab.jl."/><meta property="twitter:description" content="Documentation for GraphLab.jl."/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img src="../../assets/logo.png" alt="GraphLab.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">GraphLab.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><a class="tocitem" href="../../usage/">Usage Guide</a></li><li><input class="collapse-toggle" id="menuitem-3" type="checkbox" checked/><label class="tocitem" for="menuitem-3"><span class="docs-label">Examples</span><i class="docs-chevron"></i></label><ul class="collapsed"><li class="is-active"><a class="tocitem" href>Example 1</a></li><li><a class="tocitem" href="../ex2/">Example 2</a></li></ul></li><li><a class="tocitem" href="../../api/">API Reference</a></li><li><a class="tocitem" href="../../dev_api/">Developers API Reference</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>Example 1</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Example 1</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/lechekhabm/GraphLab.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/lechekhabm/GraphLab.jl" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><p>Example 1</p><p>This example compares bisection methods on several mesh graphs.</p><pre><code class="language- hljs">using SparseArrays, DelimitedFiles, MAT, Plots, PrettyTables
+using GraphLab
+
+
+function benchmark(A::SparseMatrixCSC,
+    coords::Matrix,
+    prefix::String)
+    # Partition methods
+    p_coord = GraphLab.part_coordinate(A, coords)
+    p_inertial = GraphLab.part_inertial(A, coords)
+    p_spectral = GraphLab.part_spectral(A)
+    p_metis = GraphLab.part_metis(A, 2, :RECURSIVE)
+
+    # Save visualizations
+    GraphLab.draw_graph(A, coords, p_coord, file_name=prefix * &quot;_coordinate.png&quot;)
+    GraphLab.draw_graph(A, coords, p_inertial, file_name=prefix * &quot;_inertial.png&quot;)
+    GraphLab.draw_graph(A, coords, p_spectral, file_name=prefix * &quot;_spectral.png&quot;)
+    GraphLab.draw_graph(A, coords, p_metis, file_name=prefix * &quot;_metis.png&quot;)
+
+    # Compute edge cuts
+    edge_cuts = [
+        GraphLab.count_edge_cut(A, p_coord),
+        GraphLab.count_edge_cut(A, p_inertial),
+        GraphLab.count_edge_cut(A, p_spectral),
+        GraphLab.count_edge_cut(A, p_metis)
+    ]
+
+    norm_cuts = [
+        GraphLab.normalized_cut(A, p_coord),
+        GraphLab.normalized_cut(A, p_inertial),
+        GraphLab.normalized_cut(A, p_spectral),
+        GraphLab.normalized_cut(A, p_metis)
+    ]
+
+    ratio_cuts = [
+        GraphLab.ratio_cut(A, p_coord),
+        GraphLab.ratio_cut(A, p_inertial),
+        GraphLab.ratio_cut(A, p_spectral),
+        GraphLab.ratio_cut(A, p_metis)
+    ]
+
+    # Compute balance ratios
+    balances = [
+        GraphLab.compute_partition_balance(p_coord),
+        GraphLab.compute_partition_balance(p_inertial),
+        GraphLab.compute_partition_balance(p_spectral),
+        GraphLab.compute_partition_balance(p_metis)
+    ]
+
+    return edge_cuts, norm_cuts, ratio_cuts, balances
+end
+
+# List of .mat files
+files = [
+    &quot;3elt.mat&quot;,
+    &quot;airfoil1.mat&quot;,
+    &quot;barth4.mat&quot;,
+    &quot;crack.mat&quot;,
+    &quot;mesh1e1.mat&quot;,
+    &quot;mesh2e1.mat&quot;,
+    &quot;mesh3e1.mat&quot;,
+    &quot;netz4504_dual.mat&quot;,
+    &quot;stufe.mat&quot;,
+    &quot;ukerbe1.mat&quot;
+]
+
+# Directory containing the files
+base_dir = &quot;examples/meshes/&quot;
+
+final_results = Matrix{Any}(undef, length(files), 17)
+
+# Process each file
+for (i, file_name) in enumerate(files)
+    # Open the .mat file
+    file_path = joinpath(base_dir, file_name)
+    file = MAT.matopen(file_path)
+    data = MAT.read(file)
+
+    # Extract adjacency matrix and coordinates
+    # note &quot;Swiss_graph.mat&quot; as sliglty different data structure
+    if file_name == &quot;Swiss_graph.mat&quot;
+        A = sparse(data[&quot;CH_adj&quot;])
+        coords = data[&quot;CH_coords&quot;]
+    else
+        A = data[&quot;Problem&quot;][&quot;A&quot;]
+        coords = data[&quot;Problem&quot;][&quot;aux&quot;][&quot;coord&quot;]
+    end
+
+    # Symmetrize A
+    A = (A + transpose(A)) / 2
+
+    # Generate a prefix for output files based on the file name
+    prefix = &quot;ex1_&quot; * replace(file_name, &quot;.mat&quot; =&gt; &quot;&quot;)
+
+    # Run the benchmark function
+    println(&quot;Processing file: $file_path with prefix: $prefix&quot;)
+    edge_cuts, norm_cuts, ratio_cuts, balances = benchmark(A, coords, prefix)
+
+    final_results[i, 1] = file_name
+    final_results[i, 2] = edge_cuts[1]
+    final_results[i, 3] = norm_cuts[1]
+    final_results[i, 4] = ratio_cuts[1]
+    final_results[i, 5] = balances[1]  ## Balance for part_coordinate
+    final_results[i, 6] = edge_cuts[2]
+    final_results[i, 7] = norm_cuts[2]
+    final_results[i, 8] = ratio_cuts[2]
+    final_results[i, 9] = balances[2]  ## Balance for part_inertial
+    final_results[i, 10] = edge_cuts[3]
+    final_results[i, 11] = norm_cuts[3]
+    final_results[i, 12] = ratio_cuts[3]
+    final_results[i, 13] = balances[3]  ## Balance for part_spectral
+    final_results[i, 14] = edge_cuts[4]
+    final_results[i, 15] = norm_cuts[4]
+    final_results[i, 16] = ratio_cuts[4]
+    final_results[i, 17] = balances[4]  ## Balance for part_metis
+
+    # Close the .mat file
+    MAT.close(file)
+end
+
+# Pretty print the final results
+header = [
+    &quot;Mesh&quot;,
+    &quot;EC (Coord)&quot;, &quot;NC (Coord)&quot;, &quot;RC (Coord)&quot;, &quot;Bal. (Coord)&quot;,
+    &quot;EC (Inert.)&quot;, &quot;NC (Inert.)&quot;, &quot;RC (Inert.)&quot;, &quot;Bal. (Inert.)&quot;,
+    &quot;EC (Spec.)&quot;, &quot;NC (Spec.)&quot;, &quot;RC (Spec.)&quot;, &quot;Bal. (Spec.)&quot;,
+    &quot;EC (METIS)&quot;, &quot;NC (METIS)&quot;, &quot;RC (METIS)&quot;, &quot;Bal. (METIS)&quot;
+]
+
+io = IOBuffer()
+pretty_table(io, final_results; column_labels=header, backend=:text)
+println(String(take!(io)))
+nothing</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../usage/">« Usage Guide</a><a class="docs-footer-nextpage" href="../ex2/">Example 2 »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.11.2 on <span class="colophon-date" title="Thursday 2 April 2026 14:52">Thursday 2 April 2026</span>. Using Julia version 1.10.11.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
