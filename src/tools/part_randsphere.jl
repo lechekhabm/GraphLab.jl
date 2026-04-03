@@ -16,18 +16,18 @@ coords: n × d matrix of points
 Returns: n × (d+1) matrix on the unit sphere
 """
 function _stereoup(coords::Matrix{Float64})
-    n, d = size(coords)
-    lifted = zeros(n, d+1)
+  n, d = size(coords)
+  lifted = zeros(n, d + 1)
 
-    for i in 1:n
-        x = coords[i, :]
-        r2 = dot(x, x)
-        lifted[i, 1:d] .= 2 * x
-        lifted[i, d+1] = r2 - 1
-        lifted[i, :] ./= r2 + 1
-    end
+  for i in 1:n
+    x = coords[i, :]
+    r2 = dot(x, x)
+    lifted[i, 1:d] .= 2 * x
+    lifted[i, d+1] = r2 - 1
+    lifted[i, :] ./= r2 + 1
+  end
 
-    return lifted
+  return lifted
 end
 
 
@@ -42,11 +42,11 @@ Returns:
 - center::Vector{Float64}: estimated _centerpoint
 """
 function _centerpoint(X::Matrix{Float64}, sample_size::Int)
-    n, d = size(X)
-    idx = rand(1:n, min(sample_size, n))
-    sample = X[idx, :]
-    c = mapslices(median, sample; dims=1)[:]
-    return c
+  n, d = size(X)
+  idx = rand(1:n, min(sample_size, n))
+  sample = X[idx, :]
+  c = mapslices(median, sample; dims=1)[:]
+  return c
 end
 
 
@@ -62,14 +62,14 @@ end
 # """
 # function _conmap(c::Vector{Float64}, xyz::Matrix{Float64})
 #     d = size(xyz, 2)
-  
+
 #     # Compute reflection and stretch
 #     Q, r = _reflector(c)
 #     alpha = sqrt((1+r)/(1-r))
-  
+
 #     # Reflect
 #     xyzref = xyz * Q;
-  
+
 #     # Handle north pole in the stereographic projection
 #     norths = findall(x -> abs(x - 1) < sqrt(eps()), xyzref[:, d]) 
 #     if !isempty(norths)
@@ -77,54 +77,54 @@ end
 #       # xyzref[norths, :] = zeros(length(norths), d)
 #       xyzref[norths, :] .= 0
 #     end
-  
+
 #     xyref = _stereodown(xyzref)
-  
+
 #     # Stretch
 #     xymap = xyref ./ alpha
 #     xyzmap = _stereoup(xymap)
-  
+
 #     if !isempty(norths)
 #       xyzmap[norths,:] = xyzn
 #     end
 
 #     println(xyzmap)
-  
+
 #     return xyzmap, xymap
 # end
 
 function _conmap(c::Vector{Float64}, xyz::Matrix{Float64})
-    d = size(xyz, 2)
+  d = size(xyz, 2)
 
-    # 1. reflection / rotation
-    Q, r = _reflector(c)
-    alpha = sqrt((1 + r) / (1 - r))   # stretch factor (as in the original code)
+  # 1. reflection / rotation
+  Q, r = _reflector(c)
+  alpha = sqrt((1 + r) / (1 - r))   # stretch factor (as in the original code)
 
-    # 2. rotate all points
-    xyzref = xyz * Q
+  # 2. rotate all points
+  xyzref = xyz * Q
 
-    # 3. handle north pole (z == 1) specially to avoid stereographic blowup
-    norths = findall(x -> abs(x - 1) < sqrt(eps(Float64)), xyzref[:, d])
-    xyzn = xyzref[norths, :]
-    if !isempty(norths)
-        xyzref[norths, :] .= 0
-    end
+  # 3. handle north pole (z == 1) specially to avoid stereographic blowup
+  norths = findall(x -> abs(x - 1) < sqrt(eps(Float64)), xyzref[:, d])
+  xyzn = xyzref[norths, :]
+  if !isempty(norths)
+    xyzref[norths, :] .= 0
+  end
 
-    # 4. stereographic projection down to R^d
-    xyref = _stereodown(xyzref)
+  # 4. stereographic projection down to R^d
+  xyref = _stereodown(xyzref)
 
-    # 5. stretch in the plane
-    xymap = xyref ./ alpha
+  # 5. stretch in the plane
+  xymap = xyref ./ alpha
 
-    # 6. lift back to the sphere
-    xyzmap = _stereoup(xymap)
+  # 6. lift back to the sphere
+  xyzmap = _stereoup(xymap)
 
-    # 7. restore exact north-pole points
-    if !isempty(norths)
-        xyzmap[norths, :] .= xyzn
-    end
+  # 7. restore exact north-pole points
+  if !isempty(norths)
+    xyzmap[norths, :] .= xyzn
+  end
 
-    return xyzmap, xymap
+  return xyzmap, xymap
 end
 
 
@@ -170,26 +170,26 @@ Returns:
 - r :: Float64          (‖c‖₂)
 """
 function _reflector(c::AbstractVector)
-    d = length(c)
-    r = norm(c)
+  d = length(c)
+  r = norm(c)
 
-    if r == 0
-        return Matrix{Float64}(I, d, d), 0.0
-    end
+  if r == 0
+    return Matrix{Float64}(I, d, d), 0.0
+  end
 
-    t = zeros(Float64, d)
-    t[end] = r                       # target vector (0,...,0,r)
+  t = zeros(Float64, d)
+  t[end] = r                       # target vector (0,...,0,r)
 
-    v = c .- t
-    nv2 = dot(v, v)
+  v = c .- t
+  nv2 = dot(v, v)
 
-    if nv2 == 0
-        # c already aligned with last axis
-        return Matrix{Float64}(I, d, d), r
-    end
+  if nv2 == 0
+    # c already aligned with last axis
+    return Matrix{Float64}(I, d, d), r
+  end
 
-    Q = Matrix{Float64}(I, d, d) .- 2.0 * (v * v') / nv2
-    return Q, r
+  Q = Matrix{Float64}(I, d, d) .- 2.0 * (v * v') / nv2
+  return Q, r
 end
 
 
@@ -211,11 +211,11 @@ in ℝ^{d} (embedded in ℝ^{d+1}) back to Euclidean space ℝ^{d}.
 - This operation is the inverse of the stereographic projection performed in `_stereoup`.
 """
 function _stereodown(xyz)
-    n, dim = size(xyz)
-    xy = xyz[:, 1:dim-1] ./ (1 .- xyz[:, dim])  # broadcasting does the repetition
-    
-  
-    return xy
+  n, dim = size(xyz)
+  xy = xyz[:, 1:dim-1] ./ (1 .- xyz[:, dim])  # broadcasting does the repetition
+
+
+  return xy
 end
 
 
@@ -234,29 +234,29 @@ Returns:
 - mincut::Float64: minimum edge cut found
 """
 function _sepcircle(A::SparseMatrixCSC, X::Matrix{Float64}, ntrials::Int)
-    _, d = size(X)
-    M = (X' * X) ^ 2
-  
-    vv = randn(ntrials, d) * M
-    
-    bestcut = Inf;
-    bestdir = vv[1, :]
-  
-    for i in 1:size(vv, 1)
-      v = vv[i, :]
-  
-      if norm(v) != 0
-        currentcut = _sepquality(v, A, X)
-      end
-  
-      if bestcut > currentcut
-        bestcut = currentcut
-        bestdir = v
-      end
+  _, d = size(X)
+  M = (X' * X)^2
+
+  vv = randn(ntrials, d) * M
+
+  bestcut = Inf
+  bestdir = vv[1, :]
+
+  for i in 1:size(vv, 1)
+    v = vv[i, :]
+
+    if norm(v) != 0
+      currentcut = _sepquality(v, A, X)
     end
-  
-    return bestdir, bestcut 
-  
+
+    if bestcut > currentcut
+      bestcut = currentcut
+      bestdir = v
+    end
+  end
+
+  return bestdir, bestcut
+
 end
 
 
@@ -279,11 +279,11 @@ by computing the number of graph edges cut by the resulting _partition.
 - The number of crossing edges is computed using nonzero entries in `A[a, b]` and `A[b, a]'`.
 """
 function _sepquality(v::Vector{Float64}, A::SparseMatrixCSC, xyz::Matrix{Float64})
-    a, b = _partition(xyz, v)
-    # cutsize = nnz(Bool.(A[a, b]) .| Bool.(A[b, a]'))
-    cutsize = nnz((A[a, b] .!= 0) .| (A[b, a]' .!= 0))
-  
-    return cutsize
+  a, b = _partition(xyz, v)
+  # cutsize = nnz(Bool.(A[a, b]) .| Bool.(A[b, a]'))
+  cutsize = nnz((A[a, b] .!= 0) .| (A[b, a]' .!= 0))
+
+  return cutsize
 end
 
 
@@ -302,30 +302,30 @@ Returns:
 - mincut::Float64: corresponding edge cut
 """
 function _sepline(A::SparseMatrixCSC, xy::Matrix{Float64}, ntrials::Int)
-    d = size(xy, 2)
-  
-    _, S, V = svd(xy);
-  
-    exponent = 2*(d+1)/(ntrials-1)
-    s = diagm(S).^exponent
-    W = V * s * V'
-    vv = randn(ntrials, d) * W
-    rownorms = sqrt.(sum(vv .* vv, dims=2))
-    vv = Diagonal(vec(1 ./ rownorms)) * vv
-  
-    bestcut = Inf
-    bestdir = vv[1, :]
-    for i in 1:ntrials
-      v = vv[i, :]
-      cut = _sepquality(v, A, xy)
-      if cut < bestcut
-        bestcut = cut
-        bestdir = v
-      end
+  d = size(xy, 2)
+
+  _, S, V = svd(xy)
+
+  exponent = 2 * (d + 1) / (ntrials - 1)
+  s = diagm(S) .^ exponent
+  W = V * s * V'
+  vv = randn(ntrials, d) * W
+  rownorms = sqrt.(sum(vv .* vv, dims=2))
+  vv = Diagonal(vec(1 ./ rownorms)) * vv
+
+  bestcut = Inf
+  bestdir = vv[1, :]
+  for i in 1:ntrials
+    v = vv[i, :]
+    cut = _sepquality(v, A, xy)
+    if cut < bestcut
+      bestcut = cut
+      bestdir = v
     end
-  
-    return bestdir, bestcut 
   end
+
+  return bestdir, bestcut
+end
 
 
 """
@@ -342,10 +342,10 @@ Returns:
 - part1, part2: vectors of node indices
 """
 function part_randsphere(A::SparseMatrixCSC, coords::Matrix{Float64}; ntrials::Int=30)
-    n, d = size(coords)
+  n, d = size(coords)
 
   # How to split the tries
-  nlines = floor(Int, (ntrials / 2) ^ (d / (d + 1))) # number of lines to try (fallback)
+  nlines = floor(Int, (ntrials / 2)^(d / (d + 1))) # number of lines to try (fallback)
   nouter = ceil(Int, log(ntrials - nlines + 1) / log(20)) # number of _centerpoints to try
   ninner = floor(Int, (ntrials - nlines) / nouter) # number of random directions (great circles) to test for each _centerpoint.
   nlines = ntrials - nouter * ninner # Rounding
@@ -386,7 +386,7 @@ function part_randsphere(A::SparseMatrixCSC, coords::Matrix{Float64}; ntrials::I
     bestdir = linedir
     p1, p2 = _partition(xy, linedir)
   else
-    bestmap, _  = _conmap(bestcpt, xyz)
+    bestmap, _ = _conmap(bestcpt, xyz)
     p1, p2 = _partition(bestmap, bestdir)
   end
 
@@ -417,9 +417,9 @@ and _partitioning at the median projection value.
 - Commonly used to implement great-circle or hyperplane separators.
 """
 function _partition(X::Matrix{Float64}, direction::Vector{Float64})
-    proj = X * direction
-    threshold = median(proj)
-    part1 = findall(proj .<= threshold)
-    part2 = findall(proj .> threshold)
-    return part1, part2
+  proj = X * direction
+  threshold = median(proj)
+  part1 = findall(proj .<= threshold)
+  part2 = findall(proj .> threshold)
+  return part1, part2
 end

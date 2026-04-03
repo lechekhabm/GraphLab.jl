@@ -114,13 +114,6 @@ for k in [8, 16]
         "part_metis_rec($k)",
         "part_metis_kway($k)"
     ]
-    io = IOBuffer()
-    pretty_table(io, final_cuts; column_labels=header, backend=:text)
-    println(String(take!(io)))
-
-    io = IOBuffer()
-    pretty_table(io, final_balances; column_labels=header, backend=:text)
-    println(String(take!(io)))
-
-    nothing
+    pretty_table(final_cuts; column_labels=header)
+    pretty_table(final_balances; column_labels=header)
 end
