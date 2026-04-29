@@ -1,15 +1,22 @@
 using Documenter
 using Literate
-using GraphLab  # Make sure it uses the locally developed version
+using GraphLab
 
-# println("Defined functions: ", names(GraphPartitioning, all=true))
-Literate.markdown(joinpath(@__DIR__, "literate", "ex1.jl"),
-    joinpath(@__DIR__, "src", "generated");
-    documenter=true)
+generated_dir = joinpath(@__DIR__, "src", "generated")
 
-Literate.markdown(joinpath(@__DIR__, "literate", "ex2.jl"),
-    joinpath(@__DIR__, "src", "generated");
-    documenter=true)
+literate_files = [
+    "quickstart.jl",
+    "bisection_methods.jl",
+    "recursive_partitioning.jl",
+]
+
+for file in literate_files
+    Literate.markdown(
+        joinpath(@__DIR__, "literate", file),
+        generated_dir;
+        documenter=true,
+    )
+end
 
 makedocs(
     sitename="GraphLab.jl",
@@ -25,21 +32,21 @@ makedocs(
         "Home" => "index.md",
         "Usage Guide" => "usage.md",
         "Examples" => [
-            "Example 1" => "generated/ex1.md",
-            "Example 2" => "generated/ex2.md",
+            "Quick start" => "generated/quickstart.md",
+            "Bisection methods" => "generated/bisection_methods.md",
+            "Recursive partitioning" => "generated/recursive_partitioning.md",
         ],
         "API Reference" => "api.md",
         "Developers API Reference" => "dev_api.md",
     ],
-    warnonly=true,  # Prevent build failure due to missing docs
+    warnonly=true,
 )
 
-
-deploydocs(;
+deploydocs(
     repo="github.com/lechekhabm/GraphLab.jl.git",
     branch="gh-pages",
     devbranch="main",
-    versions=["stable", "v#.#.#", "dev"],  # enable stable badge support
-    forcepush=true,  # Ensure it force-pushes
-    deploy_config=Documenter.GitHubActions()  # Adjust if your default branch is different
+    versions=["stable", "v#.#.#", "dev"],
+    forcepush=true,
+    deploy_config=Documenter.GitHubActions(),
 )
