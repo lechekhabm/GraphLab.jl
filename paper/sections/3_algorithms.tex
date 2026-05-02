@@ -94,8 +94,7 @@
     \label{sub:rand_sphere}
 
     The random sphere method~\cite{doi:10.1137/S1064827594275339} partitions a graph
-    by exploiting spatial information to identify separators aligned with the intrinsic geometry of the vertex
-    distribution.
+    by exploiting spatial information of the vertices to identify separators.
     Unlike axis-aligned or inertia-based approaches,
     it employs randomized geometric projections to discover low-cut partitions.
     
@@ -105,17 +104,27 @@
     \end{equation}
     so that the distribution is centered at the origin and confined within a unit-scale region.
     Each normalized point $\tilde{P}_i$ is then mapped to the unit sphere,
-    $Z_i \in \mathcal{S}^d \subset{\mathbb{R}^{d+1}}$, via stereographic projection.
+    $Z_i \in \mathcal{S}^d \subset{\mathbb{R}^{d+1}}$, via stereographic projection. Each spherical center point $c$ is computed as the coordinate-wise median
+    of a randomly sampled subset of vertices, and then mapped to a
+    sphere centered at the origin of the axes through
+    a conformal transformation.
 
-    To identify separators, the algorithm selects $s$ random center points on the sphere.
-    Each center $c$ is computed as the coordinate-wise median of a randomly sampled subset of vertices and then moved to the origin through a conformal transformation of the sphere.
-    For each transformed configuration, several random unit directions $u$ are sampled, and a candidate spherical cut is generated as
+    To identify separators, we use a total number of trials \texttt{ntrials},
+    following the strategy used in Meshpart~\cite{gilbert_2020_3746723}. This number of trials is divided into
+    (i) $n_{\mathrm{lines}}$ random linear cuts in the original Euclidean space,
+    (ii) $n_{\mathrm{outer}}$ random spherical center points, and 
+    (iii) $n_{\mathrm{inner}}$ random directions tested for each center point.
+% 
+    For each $n_{\mathrm{outer}}$ transformed configuration, $n_{\mathrm{inner}}$ random unit directions $u$ are sampled, and a candidate spherical cut is generated as
+    %% BEFORE AW REVIEWS
+    % Each center $c$ is computed as the coordinate-wise median of a randomly sampled subset of vertices and then moved to the origin through a conformal transformation of the sphere.
+    % For each transformed configuration, several random unit directions $u$ are sampled, and a candidate spherical cut is generated as
 
     \begin{equation}
         \mathcal{V}_1= \{ i \mid \langle Z_i, u \rangle \leq 0 \}, \quad \mathcal{V}_2 = \{ i \mid \langle Z_i, u \rangle > 0 \},
     \end{equation}
-    The corresponding edge cut is evaluated, and the partition with the smallest cut is retained.
-
+    The corresponding edge cut is evaluated, and the partition with the smallest cut is selected.
+    % 
     % 
     \begin{figure}[t]
     \centering
@@ -129,20 +138,25 @@
     \label{fig:rsphere}
     \end{figure}
     % 
-
-    In addition to spherical separators, the algorithm also considers random linear cuts in the original
+    % 
+    In addition to spherical separators, the algorithm also considers $n_{\mathrm{lines}}$ random linear cuts in the original
     Euclidean space, defined by hyperplanes
     orthogonal to random directions and positioned at the median projected vertex coordinates.
     The final output is the spherical or linear bisection minimizing the total edge cut.
 
-    The random spherical bisection runs in $O(sr(nd+m))$, where $s$ is the number of random centers and $r$ the number of random directions per center. For fixed $d$, $s$, and $r$, this reduces to $O(n+m)$.
-    The algorithm is described in \Cref{alg:sphere} and can be applied with:
+    The random sphere bisection runs in $O(n_{\mathrm{trials}}(nd+m))$, which
+    for fixed $d$ and $n_{\mathrm{trials}}$ reduces to $O(n+m)$.
+    % % BEFORE AW REVIEW
+    % The random spherical bisection runs in $O(sr(nd+m))$, where $s$ is the number of random centers and $r$ the number of random directions per center. For fixed $d$, $s$, and $r$, this reduces to $O(n+m)$.
+    It is described in \Cref{alg:sphere} and can be applied with:
 
     \begin{lstlisting}[language=Julia]
     GraphLab.part_randsphere(A, coords; ntrials)
     \end{lstlisting}
 
-    An optional argument \texttt{ntrials} specifies the number of random directions to try.
+    % The optional argument \texttt{ntrials} specifies the total number of trials.
+    %% BEFORE AW
+    % An optional argument \texttt{ntrials} specifies the number of random directions to try.
     % A 2-dimensional geometric illustration of the spherical bisection procedure is provided in \Cref{fig:rsphere}.
     A geometric illustration of the random sphere bisection procedure, applied to 2-dimensional input coordinates and visualized on the sphere $\mathcal{S}^2 \subset \mathbb{R}^3$, is provided in \Cref{fig:rsphere}.
 
@@ -153,24 +167,49 @@
     \label{sub:sfc}
     Space-filling curves (SFCs) provide a continuous, one-dimensional traversal
     of multidimensional space that preserves spatial locality.
-    In the context of partitioning, SFCs induce a linear ordering of the data
-    points, enabling recursive division into balanced and spatially coherent subregions. We implement an adaptive SFC traversal over a
-    hierarchical spatial decomposition to generate partitions that reflect the geometric structure of the input graph~\cite{Sasidharan15, sasidharan2015space}.
-
-    The algorithm, presented in \Cref{alg:adaptive_sfc}, performs coordinate bisection as introduced in \Cref{subsubsec:coord} based on spatial distribution of the graph's vertices, using an adaptive SFC traversal.
-    It begins by constructing a $k$-dimensional tree ($k$-d tree) of the vertex coordinates $P$, a binary space-partitioning structure that recursively subdivides the domain along axis-aligned hyperplanes. At each node of the $k$-d tree, the splitting axis is chosen as the direction of maximum spatial extent, and the point set $P$ is recursively divided until each leaf contains a single point.
+    In the context of partitioning, SFCs induce a linear ordering of the
+    % data points,
+    vertices, 
+    % enabling recursive division
+    which can be split
+    into balanced and spatially coherent subregions.
+    We implement an adaptive SFC traversal over a
+    hierarchical spatial decomposition to generate partitions that reflect the geometric structure of the input graph~\cite{Sasidharan15, SasidharanSnir2015SFC}.
+    
+    %% BEFORE ANDREAS COMMENTS
+    % The algorithm, presented in \Cref{alg:adaptive_sfc}, performs coordinate bisection as introduced in \Cref{subsubsec:coord} based on spatial distribution of the graph's vertices, using an adaptive SFC traversal.
 
     % It begins by constructing a k-dimensional tree (KD-tree) of the vertex coordinates P, a binary space-partitioning structure that recursively subdivides the coordinate space along selected axes. At each node, the splitting axis is chosen according to the direction of maximum spatial extent, and the point set P is recursively divided until each leaf contains a single point.
 
+    % NEW AFTER AW'S COMMENTS
+    Let $P_i=(x_i, y_i)\in \mathbb{R}^2$ denotes the coordinates of vertex $i$.
+    The method first constructs a 2-dimensional k-d tree on the vertex coordinates.
+    This is a binary spatial hierarchy that recursively subdivides the domain along axis-aligned hyperplanes.
+    At each node, the splitting axis is chosen as the coordinate direction of maximum spatial extent,
+    and the points are divided at the median along that axis until each leaf contains a single vertex.
+    This maximum-extent rule is similar to that used in coordinate bisection (\Cref{subsubsec:coord}), but here it is used only to build the adaptive spatial hierarchy.
+
+    
     Once the tree is built, an SFC traversal induces a linear order of the leaves by visiting spatial regions in a directionally consistent, locality-preserving manner.
     At each recursive step, the traversal maintains entry and exit directions that specify how the curve enters and leaves a region, ensuring a continuous path between adjacent subregions.
-    The coordinates associated with each leaf are collected in traversal order, producing a one-dimensional sequence of vertices.
+    The vertices associated with the leaves are collected in traversal order, producing a one-dimensional sequence.
     This process is illustrated in \Cref{fig:sfc}.
 
     % Once the tree is built, an adaptive SFC traversal defines a linear order of the leaves by visiting spatial regions in a directionally consistent, locality-preserving manner. At each recursive step, the traversal maintains entry and exit directions that specify how the curve enters and leaves a region, ensuring continuity between adjacent subregions. The coordinates associated with each leaf are then collected in traversal order, producing a one-dimensional sequence. This process is illustrated in \Cref{fig:sfc}.
 
-    The resulting sequence is subsequently partitioned into $k$ contiguous segments of approximately equal size, producing $k$ spatially coherent and locality-preserving partitions. A key advantage of this method over other partitioning approaches is that, once the traversal is computed, partitioning into an arbitrary number of parts becomes a trivial post-processing step: splitting the ordered node list into contiguous segments.
-    Construction of the adaptive spatial tree requires $O(n\log n)$ time, and the subsequent SFC traversal and linear partition each cost $O(n)$, giving an overall complexity of $O(n\log n)$.
+    The resulting sequence is then partitioned into $p$ contiguous segments of approximately equal size.
+    A key advantage of this approach is that, once the traversal is computed, partitioning into any prescribed number of parts becomes a simple post-processing step on the ordered node list. This contrasts with recursive coordinate bisection, which generates multiple parts by repeatedly applying graph bisection to subgraphs.
+
+    This method is purely geometric, it does not explicitly use graph edges. Instead, it relies on the heuristic assumption that vertices that are closed in the geometric embedding are likely to be strongly connected in the graph~\cite{elsner1997graph, Gilbert98}.
+
+    % NEW AFTER AW 2
+    In our implementation, the median split yields $O(\log n)$ recursion levels.
+    At each level, the active subsets are sorted to select the median, giving a total tree-construction cost of \(O(n\log^2 n)\)~\cite{4061547}.
+    Once the hierarchy is built, the adaptive SFC traversal visits the constructed tree once, and the final partitioning of the ordered vertex list is linear in $n$. 
+    % NEW AFTER AW
+    % In the current implementation, building the k-d tree requires recursively sorting the local point set at each split to determine the median. This yields $O(n\log^2n)$ time for the tree construction, while the adaptive SFC traversal and the final partition of the ordered list are both linear. The overall complexity is therefore $O(n\log^2n)$.
+    % % BEFORE AW COMMENTS
+    % Construction of the adaptive spatial tree requires $O(n\log n)$ time, and the subsequent SFC traversal and linear partition each cost $O(n)$, giving an overall complexity of $O(n\log n)$.
 
     Adaptive space-filling curve partitioning in \texttt{GraphLab.jl} is invoked as follows, with an optional argument \texttt{k} specifying the number of partitions:
     
@@ -286,6 +325,7 @@
     This algorithm iteratively applies graph bisection, progressively
     subdividing the graph into smaller subgraphs.
     In \texttt{GraphLab.jl}, recursive bisection can be used with any of the bisection algorithms presented in \Cref{subsec:geo,subsec:non-geo}.
+    At the special case $p = 2$, recursive bisection reduces to a single application of the chosen bisection method.
     The algorithm is built around a recursive function, \texttt{Recursion}, which takes as inputs:
     \begin{itemize}
         \item $C'$, the current subgraph to be partitioned,
@@ -293,7 +333,7 @@
         \item $\mathrm{idx}$, an integer tracking the position of the first part of $C'$ in the final partitioning results.
     \end{itemize}
     
-    At each recursive step, the subgraph $C'$ is bisected into two approximately balanced parts. The process continues
+    At each recursive step, if $p'>1$, the subgraph $C'$ is bisected into two approximately balanced parts. The process continues
     until the desired number of partitions, $p = 2^q$, is obtained.
     The total cost is $O(T_{\text{bisect}}(n, m) \log p)$, where $ T_{\text{bisect}}(n, m)$ is the cost of a single bisection method.
     This recursive strategy results in a structured,

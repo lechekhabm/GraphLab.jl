@@ -3,7 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \documentclass[../paper.tex]{subfiles}
 % \begin{document}
-    Consider a mesh consisting of eight cells, as illustrated in \Cref{fig:mesh_and_graph}.
+    Consider a mesh consisting of eight cells, as illustrated in \Cref{fig:meshgraph}.
     If data exchange occurs only between adjacent cells, the mesh can be represented as a dependency
     graph.
     To partition the mesh into two domains suitable for parallel processing, the objective
@@ -33,7 +33,7 @@
         \end{subfigure}
         \caption{Mesh example consisting of 8 cells (a) and the corresponding
         dependency graph (b).}
-        \label{fig:mesh_and_graph}
+        \label{fig:meshgraph}
     \end{figure}
     
     
@@ -69,7 +69,7 @@
     neighbors. The degree matrix $\mathbf{D} \in \mathbb{R}^{n \times n}$ is defined
     as a diagonal matrix, where the diagonal entries correspond to the degrees of all vertices $d_1, \dots, d_n$.
     
-    As an example, for the mesh and the corresponding graph depicted in \Cref{fig:mesh_and_graph}, the adjacency matrix $\mathbf{A}$ and the degree matrix $\mathbf{D}$ are given as follows:
+    As an example, for the mesh and the corresponding graph depicted in \Cref{fig:meshgraph}, the adjacency matrix $\mathbf{A}$ and the degree matrix $\mathbf{D}$ are given as follows:
     
     \vspace{5mm}
     

@@ -2,21 +2,31 @@
     \caption{Random sphere bisection.}
     \label{alg:sphere}
     \begin{algorithmic}[1]
-        \Require Graph \( G = (\mathcal{V}, \mathcal{E}) \), points \( P_i = (x_{1}, \dots, x_{d})_i \)
+        \Require Graph \( G = (\mathcal{V}, \mathcal{E}) \), points \( P_i = (x_{1}, \dots, x_{d})_i \), trial budget \(n_{\mathrm{trials}}\)
     \Ensure A bisection of \( G \) into \(\mathcal{V}_1\) and \(\mathcal{V}_2\)
-    \Function{random\_sphere\_part}{graph $G$, points $P_i$}
+    \Function{random\_sphere\_part}{$G$, $P_i$, $n_{\mathrm{trials}}$}
+        \State Split \(n_{\mathrm{trials}}\) into
+            \(n_{\mathrm{outer}}\),
+            \(n_{\mathrm{inner}}\),
+            and \(n_{\mathrm{lines}}\)
         \State Calculate the center of mass \(\bar{P}\)
         \State Normalize \(P_i \rightarrow \tilde{P_i} = (P_i - \bar{P})/\max_j{|P_j - \bar{P}|}\)
         \State Project each \(\tilde{P_i}\) onto the unit sphere \(\tilde{P_i}\rightarrow Z_i \in \mathcal{S}^d\)
-        \For{each of \( s \) random center points}
-            \State Select a random subset of points from \(Z\)
-            \State Compute coordinate-wise median \(c\)
+        % \For{each of \( s \) random center points}
+        \For{\(k=1, \dots, n_{\mathrm{outer}}\)}
+            % \State Select a random subset of points from \(Z\)
+            % \State Compute coordinate-wise median \(c\)
+            \State Compute a center point \(c\) from a random subset of \(Z\)
             \State Apply conformal map to move \(c\) to the origin
-            \For{each random directions \(u\)}
+            % \For{each random directions \(u\)}
+            \For{\(l =1,\dots, n_{\mathrm{inner}}\)}
+                \State Sample a random unit direction \(u\)
                 \State \(\mathcal{V}_1 \gets { i \mid \langle Z_i, u \rangle \leq 0 }, \quad \mathcal{V}_2 \gets { i \mid \langle Z_i, u \rangle > 0 } \)
                 \State Select \(\mathcal{V}_1\), \(\mathcal{V}_2\) with the smallest edge cut
             \EndFor
         \EndFor
+        \State Generate and evaluate \(n_{\mathrm{lines}}\) random linear cuts
+        \State Retain best bisection among spherical and linear candidates 
         \State \Return \(\mathcal{V}_1\), \(\mathcal{V}_2\)
     \EndFunction
     \end{algorithmic}
