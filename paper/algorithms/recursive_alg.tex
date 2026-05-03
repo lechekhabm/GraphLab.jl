@@ -2,23 +2,24 @@
     \caption{Recursive bisection.}
     \label{alg:recursive}
     \begin{algorithmic}[1]
-        \Require Graph \( G = (\mathcal{V}, \mathcal{E}), q\)
-    \Ensure A $p$-way partition of \( G \)
-    \State \(G_p = \{C_1,\dots, C_p\}\)
-    \State \(p = 2^q\)
-    \Function{rec\_bisection}{graph $G$, number of parts $p$}
+    \Require Graph \( G = (\mathcal{V}, \mathcal{E})\), integer \(q\)
+    \Ensure A \(p\)-way partition \(G_p\) of \(G\), where \(p=2^q\)
+    \Function{rec\_bisection}{graph $G$, integer $q$}
+        \State \(p = 2^q\)
+        \State Initialize \(G_p = \{C_1,\dots, C_p\}\)
+        
         \Function{recursion}{$C'$, $p'$, $\mathrm{idx}$}
             % \If{\(p'\) \text{is even}}
             \If{\(p'> 1\)}
                 % \State \(p' \leftarrow \frac{p'}{2}\)
                 \State \(\left(C'_1, C'_2\right)\leftarrow \)\Call{bisection}{$C'$}
                 \State \Call{recursion}{$C'_1$, $p'/2$, $\mathrm{idx}$}
-                \State \Call{recursion}{$C'_2$, $p'/2$, $\mathrm{idx}+p'$}
+                \State \Call{recursion}{$C'_2$, $p'/2$, $\mathrm{idx}+p'/2$}
             \Else
                 \State \(C_{\mathrm{idx}} \leftarrow C'\)
             \EndIf
         \EndFunction
-         \State \Call{recursion}{$C$, $p$, $1$}
+         \State \Call{recursion}{$G$, $p$, $1$}
          \State \Return \(G_p\)
     \EndFunction
     \end{algorithmic}

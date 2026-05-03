@@ -78,7 +78,10 @@
     
     Here, $\mathbf{M}$ is a symmetric matrix, and its smallest eigenvalue corresponds to the minimal sum of the squared distances. Consequently, the optimal direction vector $\mathbf{u}$ is given by the
     normalized eigenvector associated with the smallest eigenvalue of
-    $\mathbf{M}$~\cite{elsner1997graph}. This choice ensures that the partitioning hyperplane is aligned with the principal axis of least variance, making the algorithm robust to coordinate system transformations. The full procedure for bisecting a graph using inertial partitioning is summarized in \Cref{alg:inert}.
+    $\mathbf{M}$~\cite{elsner1997graph}.
+    % This choice ensures that the partitioning hyperplane is aligned with the principal axis of least variance,
+    This choice aligns the projection line with the principal axis of greatest variance. Equivalently, the separating line orthogonal to the projection line is aligned with the direction of least variance.
+    % making the algorithm robust to coordinate system transformations. The full procedure for bisecting a graph using inertial partitioning is summarized in \Cref{alg:inert}.
     The inertial bisection runs in time $O(nd+m+d^3)$, which simplifies to $O(n+m)$ in fixed spatial dimension.
     
     \input{algorithms/inertial_alg}
@@ -200,7 +203,7 @@
     The resulting sequence is then partitioned into $p$ contiguous segments of approximately equal size.
     A key advantage of this approach is that, once the traversal is computed, partitioning into any prescribed number of parts becomes a simple post-processing step on the ordered node list. This contrasts with recursive coordinate bisection, which generates multiple parts by repeatedly applying graph bisection to subgraphs.
 
-    This method is purely geometric, it does not explicitly use graph edges. Instead, it relies on the heuristic assumption that vertices that are closed in the geometric embedding are likely to be strongly connected in the graph~\cite{elsner1997graph, Gilbert98}.
+    This method is purely geometric, it does not explicitly use graph edges. Instead, it relies on the heuristic assumption that vertices that are close in the geometric embedding are likely to be strongly connected in the graph~\cite{elsner1997graph, doi:10.1137/S1064827594275339}.
 
     % NEW AFTER AW 2
     In our implementation, the median split yields $O(\log n)$ recursion levels.
@@ -211,10 +214,10 @@
     % % BEFORE AW COMMENTS
     % Construction of the adaptive spatial tree requires $O(n\log n)$ time, and the subsequent SFC traversal and linear partition each cost $O(n)$, giving an overall complexity of $O(n\log n)$.
 
-    Adaptive space-filling curve partitioning in \texttt{GraphLab.jl} is invoked as follows, with an optional argument \texttt{k} specifying the number of partitions:
+    Adaptive space-filling curve partitioning in \texttt{GraphLab.jl} is invoked as follows, with an optional argument \texttt{p} specifying the number of partitions:
     
     \begin{lstlisting}[language=Julia]
-    GraphLab.part_adaptive_sfc(A, coords, k)
+    GraphLab.part_adaptive_sfc(A, coords, p)
     \end{lstlisting}
 
     \input{figures/sfc_fig}
@@ -328,9 +331,9 @@
     At the special case $p = 2$, recursive bisection reduces to a single application of the chosen bisection method.
     The algorithm is built around a recursive function, \texttt{Recursion}, which takes as inputs:
     \begin{itemize}
-        \item $C'$, the current subgraph to be partitioned,
-        \item $p'$, the number of partitions into which $C'$ will be further divided, and
-        \item $\mathrm{idx}$, an integer tracking the position of the first part of $C'$ in the final partitioning results.
+        \item~$C'$, the current subgraph to be partitioned,
+        \item~$p'$, the number of partitions into which $C'$ will be further divided, and
+        \item~$\mathrm{idx}$, an integer tracking the position of the first part of $C'$ in the final partitioning results.
     \end{itemize}
     
     At each recursive step, if $p'>1$, the subgraph $C'$ is bisected into two approximately balanced parts. The process continues
