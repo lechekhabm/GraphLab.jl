@@ -2,8 +2,9 @@
 [![CI](https://github.com/lechekhabm/GraphLab.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/lechekhabm/GraphLab.jl/actions/workflows/ci.yml)
 [![Documentation](https://github.com/lechekhabm/GraphLab.jl/actions/workflows/docs.yml/badge.svg)](https://lechekhabm.github.io/GraphLab.jl/dev)
 [![License](https://img.shields.io/github/license/lechekhabm/GraphLab.jl)](https://github.com/lechekhabm/GraphLab.jl/blob/main/LICENSE)
-[![status](https://proceedings.juliacon.org/papers/f01279a1591c7ab8171510bf63c61d56/status.svg)](https://proceedings.juliacon.org/papers/f01279a1591c7ab8171510bf63c61d56)
 [![DOI](https://zenodo.org/badge/904673516.svg)](https://doi.org/10.5281/zenodo.20729677)
+[![status](https://proceedings.juliacon.org/papers/f01279a1591c7ab8171510bf63c61d56/status.svg)](https://proceedings.juliacon.org/papers/f01279a1591c7ab8171510bf63c61d56)
+
 
 ## Overview
 
